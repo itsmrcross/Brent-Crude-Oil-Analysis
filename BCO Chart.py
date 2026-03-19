@@ -194,7 +194,7 @@ st.markdown("## Geopolitical Influence (Key Quotes)")
 
 st.write("""
 - Trump: "No ship is allowed to pass the Strait of Hormuz" → Supply shock → Prices ↑  
-- Iran IRGC: "We will target ships" → Fear → Prices ↑ (Increased)  
+- Iran IRGC: "We will target ships" → Fear → Prices ↑   
 - Trump: "War could end soon" → Relief → Prices ↓  
 - Powell: "We will wait and see" → Uncertainty → Prices ↑  
 - Iran: "Energy facilities are targets" → Major escalation → Prices ↑↑  
