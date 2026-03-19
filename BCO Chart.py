@@ -3,7 +3,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 
-# ---------------- PAGE CONFIG ----------------
 st.set_page_config(page_title="Brent Crude Oil Analysis", layout="wide")
 
 st.title("🪖Iran vs USA & Israel: Impact on Brent Crude Oil")
