@@ -132,35 +132,49 @@ with chart_col:
 
 # -------- RIGHT: METRICS --------
 with metrics_col:
-    st.markdown("### Key Metrics")
+st.markdown("## Key Metrics")
 
-    highest = df['Price'].max()
-    lowest = df['Price'].min()
-    average = round(df['Price'].mean(), 2)
+# ---------------- CALCULATIONS ----------------
 
-    # 🔴 Highest (RED)
-    st.markdown(f"""
-    <div style="padding:12px;border-radius:10px;background-color:#1a0f0f;text-align:center;margin-bottom:10px;">
-        <h6 style="color:white;margin:0;">Highest</h6>
-        <h3 style="color:#ff4d4d;margin:0;">${highest}</h3>
-    </div>
-    """, unsafe_allow_html=True)
+# Largest Increase
+max_increase = df["Change_numeric"].max()
 
-    # 🟢 Lowest (GREEN)
-    st.markdown(f"""
-    <div style="padding:12px;border-radius:10px;background-color:#0f1a0f;text-align:center;margin-bottom:10px;">
-        <h6 style="color:white;margin:0;">Lowest</h6>
-        <h3 style="color:#00ff88;margin:0;">${lowest}</h3>
-    </div>
-    """, unsafe_allow_html=True)
+# Largest Decrease
+max_decrease = df["Change_numeric"].min()
 
-    # ⚪ Average (NEUTRAL)
-    st.markdown(f"""
-    <div style="padding:12px;border-radius:10px;background-color:#111;text-align:center;">
-        <h6 style="color:white;margin:0;">Average</h6>
-        <h3 style="color:#cccccc;margin:0;">${average}</h3>
-    </div>
-    """, unsafe_allow_html=True)
+# Format values
+increase_text = f"{max_increase:.2f}% Increase"
+decrease_text = f"{abs(max_decrease):.2f}% Decrease"
+
+# ---------------- LAYOUT ----------------
+
+metric_col1, metric_col2 = st.columns(2)
+
+# 🔴 Increase (RED)
+metric_col1.markdown(f"""
+<div style="
+    padding:12px;
+    border-radius:12px;
+    background-color:#1a0000;
+    text-align:center;
+    border:1px solid #ff4b4b;">
+    <h5 style="color:white;margin-bottom:5px;">Top Increase</h5>
+    <h3 style="color:#ff4b4b;margin:0;">{increase_text}</h3>
+</div>
+""", unsafe_allow_html=True)
+
+# 🟢 Decrease (GREEN)
+metric_col2.markdown(f"""
+<div style="
+    padding:12px;
+    border-radius:12px;
+    background-color:#001a00;
+    text-align:center;
+    border:1px solid #00ff88;">
+    <h5 style="color:white;margin-bottom:5px;">Top Decrease</h5>
+    <h3 style="color:#00ff88;margin:0;">{decrease_text}</h3>
+</div>
+""", unsafe_allow_html=True)
 
 # ---------------- TABLE ----------------
 st.markdown("## Full Data Table")
