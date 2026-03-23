@@ -170,16 +170,6 @@ st.dataframe(df, use_container_width=True)
 # ---------------- MAP ----------------
 st.markdown("## Global Strategic Waterways Map")
 
-#!/usr/bin/env python3
-"""
-Interactive Global Strategic Waterways Map
-Uses Folium (Leaflet.js) to create a rich interactive HTML map.
-Run in VSCode: python strategic_waterways_map.py
-Then open strategic_waterways_map.html in your browser.
-
-Install dependencies: pip install folium
-"""
-
 import folium
 from folium.plugins import LocateControl, MiniMap, MousePosition
 
