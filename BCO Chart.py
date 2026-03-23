@@ -24,7 +24,7 @@ st.title("Closure of Strait of Hormuz: Impact on Brent Crude")
 st.subheader("28 February to Present")
 
 # ---------------- LOAD DATA ----------------
-df = pd.read_excel("BCO_Geopolitical_Tracker.xlsx", sheet_name="Daily Log", header=2)
+df = pd.read_csv("daily_log.csv")
 
 # DEBUG: show actual column names (TEMPORARY)
 st.write("Columns:", df.columns)
@@ -32,7 +32,6 @@ st.write("Columns:", df.columns)
 # Clean column names
 df.columns = df.columns.str.strip()
 
-# ---------------- FORMAT DATA ----------------
 df["Change_numeric"] = (
     df["Change (%)"]
     .astype(str)
@@ -41,6 +40,7 @@ df["Change_numeric"] = (
     .str.strip()
     .astype(float)
 )
+
 df["Change"] = df["Change_numeric"].apply(lambda x: f"{x:+.2f}%")
 
 # ---------------- CHART (TOP PRIORITY) ----------------
