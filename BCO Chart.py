@@ -1,11 +1,25 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import plotly.express as px
 
 st.set_page_config(page_title="Brent Crude Oil Analysis", layout="wide")
 
-st.title("🪖Iran vs USA & Israel: Impact on Brent Crude Oil")
+st.markdown("""
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+* {
+    font-family: 'Montserrat', sans-serif !important;
+}
+h1, h2, h3 {
+    font-weight: 600;
+}
+p, span, div {
+    font-weight: 400;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.title("Iran vs USA & Israel: Impact on Brent Crude Oil")
 st.subheader("28 February 2026 → 19 March 2026")
 
 # ---------------- DATA ----------------
@@ -116,11 +130,12 @@ fig = px.line(
 )
 
 fig.update_traces(
-    line=dict(color="#00D4FF", width=3),
+    line=dict(color="#13008D", width=3),
     marker=dict(size=8)
 )
 
 fig.update_layout(
+    font=dict(family="Montserrat"),
     template="plotly_dark",
     hovermode="x unified",
     xaxis_title="Date",
@@ -150,7 +165,7 @@ for i in range(len(df)):
             arrowcolor=color,
 
             ax=0,
-            ay=-80 if change > 0 else 80,
+            ay = -60 if change > 0 else 60,
 
             bgcolor="rgba(0,0,0,0.6)",
             bordercolor=color,
@@ -162,61 +177,3 @@ for i in range(len(df)):
 
 # ---------------- SHOW CHART ----------------
 st.plotly_chart(fig, use_container_width=True)
-
-# ---------------- DESCRIPTION ----------------
-st.markdown("## What is Crude Oil?")
-st.write("""
-Crude oil is a naturally occurring liquid fossil fuel composed of hydrocarbons.
-It is refined into fuels like petrol, diesel, jet fuel, and used in plastics, chemicals, and more.
-Brent Crude Oil is the global benchmark used to price oil internationally.
-""")
-
-# ---------------- SPECS ----------------
-st.markdown("## Crude Oil Specifications")
-st.write("""
-- Benchmark: Brent Crude
-- Unit: Barrels (1 barrel = 159 liters)
-- Pricing: USD ($)/barrel
-- Type: Light Sweet Crude
-- Sulfur Content: Low
-- Global Influence: High - used Worldwide
-""")
-
-# ---------------- CONVERSION ----------------
-st.markdown("## Conversion")
-usd_to_zar = 18.5  # approximate
-df["Price (ZAR)"] = df["Price"] * usd_to_zar
-st.write("Approximate USD → ZAR conversion rate: $1 = R18.5")
-st.dataframe(df[["Date", "Price", "Price (ZAR)"]])
-
-# ---------------- GEOPOLITICAL COMMENTS ----------------
-st.markdown("## Geopolitical Influence (Key Quotes)")
-
-st.write("""
-- Trump: "No ship is allowed to pass the Strait of Hormuz" → Supply shock → Prices ↑  
-- Iran IRGC: "We will target ships" → Fear → Prices ↑   
-- Trump: "War could end soon" → Relief → Prices ↓  
-- Powell: "We will wait and see" → Uncertainty → Prices ↑  
-- Iran: "Energy facilities are targets" → Major escalation → Prices ↑↑  
-""")
-
-# ---------------- DAILY SUMMARY ----------------
-st.markdown("## Daily Market Summary")
-
-for i in range(len(df)):
-    st.write(f"**{df['Date'][i]}** → {df['Event'][i]} | Price: ${df['Price'][i]} | Change: {df['Change %'][i]}%")
-
-# ---------------- FINAL SUMMARY ----------------
-st.markdown("## Final Analysis")
-
-st.write("""
-- The dominant driver of price increases was supply disruption via the Strait of Hormuz.
-- Any threat or closure caused immediate spikes.
-- Temporary declines occurred only when:
-  - De-escalation was suggested
-  - Ships resumed partial movement
-- The largest spikes were tied to:
-  - Direct attacks on infrastructure
-  - Explicit military threats
-- The market remained highly sensitive to geopolitical statements.
-""")
