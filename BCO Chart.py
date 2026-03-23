@@ -26,6 +26,15 @@ st.subheader("28 February to Present")
 # ---------------- LOAD DATA ----------------
 df = pd.read_excel("BCO_Geopolitical_Tracker.xlsx", sheet_name="Daily Log", header=2)
 
+# Clean column names (fix hidden spaces issues)
+df.columns = df.columns.str.strip()
+
+# DEBUG: show actual column names (TEMPORARY)
+st.write("Columns:", df.columns)
+
+# Convert Change column (adjust name if needed after seeing output)
+df["Change_numeric"] = df["Change %"].astype(float)
+
 # Clean column names
 df.columns = df.columns.str.strip()
 
