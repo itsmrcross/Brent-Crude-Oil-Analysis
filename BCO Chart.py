@@ -64,63 +64,100 @@ df = pd.DataFrame(data, columns=columns)
 df["Change"] = df["Change_numeric"].apply(lambda x: f"{x:+.2f}%")
 
 # ---------------- CHART ----------------
-st.markdown("## Brent Crude Oil Price Trend")
+# ---------------- CHART + METRICS SIDE BY SIDE ----------------
+st.markdown("## Brent Crude Oil Price Trend & Key Metrics")
 
-fig = px.line(
-    df,
-    x="Date",
-    y="Price",
-    title="Brent Crude Oil Prices Over Time",
-    markers=True,
-    hover_data=[
-        "Headline Event","Impact","Event Category","Key Actors",
-        "Supply Impact (mb/d net)","OPEC/IEA/Policy Response",
-        "Price Mechanism","Day-on-Day Narrative","Key Quote","Change"
-    ]
-)
+chart_col, metrics_col = st.columns([3, 1])  # 3:1 ratio (chart bigger)
 
-fig.update_traces(line=dict(color="#13008D", width=3), marker=dict(size=8))
+# -------- LEFT: CHART --------
+with chart_col:
+    fig = px.line(
+        df,
+        x="Date",
+        y="Price",
+        title="Brent Crude Oil Prices Over Time",
+        markers=True,
+        hover_data=[
+            "Headline Event",
+            "Impact",
+            "Event Category",
+            "Key Actors",
+            "Supply Impact (mb/d net)",
+            "OPEC/IEA/Policy Response",
+            "Price Mechanism",
+            "Day-on-Day Narrative",
+            "Key Quote",
+            "Change"
+        ]
+    )
 
-fig.update_layout(
-    template="plotly_dark",
-    hovermode="x unified",
-    xaxis_title="Date",
-    yaxis_title="Price ($/Barrel)"
-)
+    fig.update_traces(
+        line=dict(color="#13008D", width=3),
+        marker=dict(size=8),
+    )
 
-fig.update_layout(annotations=[])
+    fig.update_layout(
+        template="plotly_dark",
+        hovermode="x unified",
+        xaxis_title="Date",
+        yaxis_title="Price ($/Barrel)",
+        annotations=[]
+    )
 
-# ---------------- CALLOUTS ----------------
-for i in range(len(df)):
-    change = df["Change_numeric"].iloc[i]
+    # Smart callouts (FIXED: using "Change", not "Change (%)")
+    for i in range(len(df)):
+        change = df["Change_numeric"].iloc[i]
 
-    if change > 5 or change < -5:
-        color = "#00FFAA" if change > 0 else "#FF4B4B"
+        if change > 5 or change < -5:
+            color = "#00FFAA" if change > 0 else "#FF4B4B"
 
-        fig.add_annotation(
-            x=df["Date"].iloc[i],
-            y=df["Price"].iloc[i],
-            text=f"{df['Change'].iloc[i]}<br>{str(df['Key Quote'].iloc[i])[:60]}...",
-            showarrow=True,
-            arrowhead=2,
-            arrowcolor=color,
-            ax=0,
-            ay=-100 if change > 0 else 100,
-            bgcolor="rgba(0,0,0,0.7)",
-            bordercolor=color,
-            borderwidth=1
-        )
+            fig.add_annotation(
+                x=df["Date"].iloc[i],
+                y=df["Price"].iloc[i],
+                text=f"{df['Change'].iloc[i]}<br>{str(df['Key Quote'].iloc[i])[:60]}...",
+                showarrow=True,
+                arrowhead=2,
+                arrowcolor=color,
+                ax=0,
+                ay=-100 if change > 0 else 100,
+                bgcolor="rgba(0,0,0,0.7)",
+                bordercolor=color,
+                borderwidth=1,
+                font=dict(size=11, color="white"),
+                align="center"
+            )
 
-st.plotly_chart(fig, use_container_width=True)
+    st.plotly_chart(fig, use_container_width=True)
 
-# ---------------- METRICS ----------------
-st.markdown("## Key Metrics")
 
-highest = df['Price'].max()
-lowest = df['Price'].min()
-average = round(df['Price'].mean(), 2)
+# -------- RIGHT: METRICS --------
+with metrics_col:
+    st.markdown("### Key Metrics")
 
-col1, col2, col3 = st.columns(3)
+    highest = df['Price'].max()
+    lowest = df['Price'].min()
+    average = round(df['Price'].mean(), 2)
+
+    st.markdown(f"""
+    <div style="padding:20px;border-radius:15px;background-color:#0f1f0f;text-align:center;margin-bottom:15px;box-shadow:0 0 15px #00ff00;">
+    <h4 style="color:white;">Highest</h4>
+    <h2 style="color:#00ff00;">${highest}</h2>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div style="padding:20px;border-radius:15px;background-color:#1f0f0f;text-align:center;margin-bottom:15px;box-shadow:0 0 15px #ff0000;">
+    <h4 style="color:white;">Lowest</h4>
+    <h2 style="color:#ff4d4d;">${lowest}</h2>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(f"""
+    <div style="padding:20px;border-radius:15px;background-color:#111;text-align:center;">
+    <h4 style="color:white;">Average</h4>
+    <h2 style="color:#ccc;">${average}</h2>
+    </div>
+    """, unsafe_allow_html=True)
 
 col1.metric("Highest Price", f"${highest}")
 col2.metric("Lowest Price", f"${lowest}")
