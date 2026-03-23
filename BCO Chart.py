@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import folium
+from streamlit_folium import st_folium
 
 st.set_page_config(layout="wide")
 
@@ -592,4 +594,4 @@ legend_html = """
 m.get_root().html.add_child(folium.Element(legend_html))
 
 # display map in Streamlit
-st_folium(m, use_container_width=True, height=700)
+st_folium(m, width="stretch", height=700)
