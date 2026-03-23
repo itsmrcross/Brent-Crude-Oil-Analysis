@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_135c34d2d85d829bc48632378a172ddc {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-minimap/3.6.1/Control.MiniMap.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/ardhi/Leaflet.MousePosition/src/L.Control.MousePosition.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ardhi/Leaflet.MousePosition/src/L.Control.MousePosition.min.css"/>
+</head>
+<body>
+    
+    
+<div id="map-header" style="
+    position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;
+    background:rgba(10,10,30,0.92);border:1px solid #FFD700;border-radius:10px;
+    padding:10px 20px;text-align:center;font-family:'Segoe UI',sans-serif;pointer-events:none;">
+  <div style="color:#FFD700;font-size:16px;font-weight:bold;letter-spacing:2px;">
+    🌍 GLOBAL STRATEGIC WATERWAYS — LIVE STATUS
+  </div>
+  <div style="color:#AAA;font-size:11px;margin-top:3px;">
+    March 2026 | US-Israel-Iran War Impact on Global Shipping
+  </div>
+</div>
+
+<div id="legend" style="
+    position:fixed;bottom:30px;left:15px;z-index:9999;
+    background:rgba(10,10,30,0.92);border:1px solid #444;border-radius:10px;
+    padding:12px 16px;font-family:'Segoe UI',sans-serif;font-size:12px;color:#DDD;
+    min-width:200px;">
+  <div style="color:#FFD700;font-weight:bold;margin-bottom:8px;">STATUS LEGEND</div>
+  <div><span style="color:#FF0000;">● </span> CLOSED — Hormuz blocked</div>
+  <div><span style="color:#FF6600;">● </span> HIGH RISK / DISRUPTED</div>
+  <div><span style="color:#0080FF;">● </span> TRAFFIC SURGE (rerouting)</div>
+  <div><span style="color:#00AA00;">● </span> OPEN / OPERATIONAL</div>
+  <hr style="border-color:#444;margin:8px 0;">
+  <div style="color:#FFD700;font-weight:bold;margin-bottom:4px;">OIL PRICE (Mar 2026)</div>
+  <div>Brent: ~$102/bbl 🔺</div>
+  <div>WTI: ~$96/bbl 🔺</div>
+  <div style="color:#FF6600;font-size:10px;margin-top:4px;">+40% since Feb 28 strikes</div>
+</div>
+
+<div id="alert-box" style="
+    position:fixed;bottom:30px;right:15px;z-index:9999;
+    background:rgba(100,0,0,0.9);border:2px solid #FF0000;border-radius:10px;
+    padding:12px 16px;font-family:'Segoe UI',sans-serif;font-size:12px;color:#FFF;
+    max-width:260px;animation:blink 2s infinite;">
+  <div style="color:#FFD700;font-weight:bold;margin-bottom:6px;">⚠️ ACTIVE CRISIS</div>
+  <div><b>Strait of Hormuz CLOSED</b></div>
+  <div style="color:#FFB0B0;margin-top:4px;">
+    Iran declared closure 2 Mar 2026.<br>
+    90% traffic drop. 170 ships stranded.<br>
+    20% of world oil supply disrupted.<br>
+    Cape of Good Hope traffic +112%.
+  </div>
+</div>
+
+<style>
+@keyframes blink {
+  0%,100% { border-color:#FF0000; }
+  50%      { border-color:#FF8800; }
+}
+</style>
+    
+            <div class="folium-map" id="map_135c34d2d85d829bc48632378a172ddc" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_135c34d2d85d829bc48632378a172ddc = L.map(
+                "map_135c34d2d85d829bc48632378a172ddc",
+                {
+                    center: [20.0, 30.0],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 3,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_135c34d2d85d829bc48632378a172ddc);
+
+            
+
+        
+    
+            var tile_layer_67fd072a9306c61277b21245e4536ff4 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_67fd072a9306c61277b21245e4536ff4.addTo(map_135c34d2d85d829bc48632378a172ddc);
+        
+    
+            var tile_layer_3d1fccf376ae70691f0aab4ac49c1d0e = L.tileLayer(
+                "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "Esri",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_3d1fccf376ae70691f0aab4ac49c1d0e.addTo(map_135c34d2d85d829bc48632378a172ddc);
+        
+    
+            var feature_group_233d75ac0db42ad3e7f4e06f5860b32b = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_54782841bc1047be940b91b2455126c5 = L.polyline(
+                [[1.3, 103.8], [7.0, 80.0], [12.5, 43.5], [26.0, 37.0], [29.9, 32.5], [32.0, 32.0], [36.0, 30.0], [40.0, 25.0], [43.0, 16.0], [45.0, 12.0], [51.0, 30.0], [54.0, 38.0], [55.0, 45.0], [51.9, 4.5]],
+                {"bubblingMouseEvents": true, "color": "#FF6600", "dashArray": "8,8", "dashOffset": null, "fill": false, "fillColor": "#FF6600", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.75, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(feature_group_233d75ac0db42ad3e7f4e06f5860b32b);
+        
+    
+            poly_line_54782841bc1047be940b91b2455126c5.bindTooltip(
+                `<div>
+                     Asia–Europe Suez Route (DISRUPTED — most carriers now avoiding)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_522100f46ffe70e788009d6aca201091 = L.polyline(
+                [[1.3, 103.8], [-5.0, 100.0], [-15.0, 90.0], [-25.0, 70.0], [-34.0, 18.5], [-30.0, 15.0], [-20.0, 10.0], [-5.0, 5.0], [5.0, -5.0], [15.0, -15.0], [35.9, -5.5], [45.0, -5.0], [51.9, 4.5]],
+                {"bubblingMouseEvents": true, "color": "#00AAFF", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#00AAFF", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.75, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_233d75ac0db42ad3e7f4e06f5860b32b);
+        
+    
+            poly_line_522100f46ffe70e788009d6aca201091.bindTooltip(
+                `<div>
+                     Asia–Europe Cape of Good Hope Route (ACTIVE — traffic +35% and surging)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_a73ea4a71e1b785605ce65529975c8d5 = L.polyline(
+                [[26.0, 50.0], [26.5, 56.2], [22.0, 60.0], [15.0, 55.0]],
+                {"bubblingMouseEvents": true, "color": "#FF0000", "dashArray": "5,5", "dashOffset": null, "fill": false, "fillColor": "#FF0000", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.75, "smoothFactor": 1.0, "stroke": true, "weight": 3}
+            ).addTo(feature_group_233d75ac0db42ad3e7f4e06f5860b32b);
+        
+    
+            poly_line_a73ea4a71e1b785605ce65529975c8d5.bindTooltip(
+                `<div>
+                     Persian Gulf Oil Exports through Hormuz — EFFECTIVELY CLOSED
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var poly_line_51da43d7be4c49e9de7d9d3545989e39 = L.polyline(
+                [[1.3, 103.8], [10.0, 130.0], [20.0, 140.0], [30.0, 150.0], [10.0, -80.0], [9.0, -79.7], [18.0, -75.0], [25.0, -75.0], [40.0, -70.0], [51.0, 0.0]],
+                {"bubblingMouseEvents": true, "color": "#AAFFAA", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#AAFFAA", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.75, "smoothFactor": 1.0, "stroke": true, "weight": 2}
+            ).addTo(feature_group_233d75ac0db42ad3e7f4e06f5860b32b);
+        
+    
+            poly_line_51da43d7be4c49e9de7d9d3545989e39.bindTooltip(
+                `<div>
+                     Asia–Americas via Panama Canal
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            feature_group_233d75ac0db42ad3e7f4e06f5860b32b.addTo(map_135c34d2d85d829bc48632378a172ddc);
+        
+    
+            var feature_group_641f34594dd48ce5a1db23c4b2658568 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_497f6a36f0c2e1b0c7b7b46e2f1d2268 = L.circleMarker(
+                [26.5667, 56.25],
+                {"bubblingMouseEvents": true, "color": "#FF0000", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#FF0000", "fillOpacity": 0.15, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 22, "stroke": true, "weight": 2}
+            ).addTo(feature_group_641f34594dd48ce5a1db23c4b2658568);
+        
+    
+        var popup_edd1907227587f93476898fceff64679 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_a33488005b80fd7baf375f8551be0a13 = $(`<div id="html_a33488005b80fd7baf375f8551be0a13" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Strait of Hormuz       </h3>       <div style="margin-bottom:8px;">         <span style="background:#FF0000;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           CLOSED         </span>         <span style="background:#FF0000;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: CRITICAL         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Between Iran and Oman, connecting the Gulf to the Arabian Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">39 km (21 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">20–21 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">~20% of global oil</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">World's most vital energy chokepoint; sole maritime exit for ~20% of global oil and LNG. Currently CLOSED by Iran (March 2026).</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Iran declared closure on 2 March 2026 following US-Israel Operation Epic Fury. Tanker traffic dropped 90%. Brent crude surged above $100/bbl.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_edd1907227587f93476898fceff64679.setContent(html_a33488005b80fd7baf375f8551be0a13);
+            
+        
+
+        circle_marker_497f6a36f0c2e1b0c7b7b46e2f1d2268.bindPopup(popup_edd1907227587f93476898fceff64679)
+        ;
+
+        
+    
+    
+            circle_marker_497f6a36f0c2e1b0c7b7b46e2f1d2268.bindTooltip(
+                `<div>
+                     <b>Strait of Hormuz</b> — CLOSED
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var circle_marker_5f75d9c90eb9c69c3707a69b3b9c81a7 = L.circleMarker(
+                [26.5667, 56.25],
+                {"bubblingMouseEvents": true, "color": "#FF0000", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#FF0000", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
+            ).addTo(feature_group_641f34594dd48ce5a1db23c4b2658568);
+        
+    
+        var popup_2f35f49f00f21157b43a818e018dac21 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_e66eabf07ca436662fd913c59fdba0fc = $(`<div id="html_e66eabf07ca436662fd913c59fdba0fc" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Strait of Hormuz       </h3>       <div style="margin-bottom:8px;">         <span style="background:#FF0000;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           CLOSED         </span>         <span style="background:#FF0000;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: CRITICAL         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Between Iran and Oman, connecting the Gulf to the Arabian Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">39 km (21 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">20–21 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">~20% of global oil</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">World's most vital energy chokepoint; sole maritime exit for ~20% of global oil and LNG. Currently CLOSED by Iran (March 2026).</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Iran declared closure on 2 March 2026 following US-Israel Operation Epic Fury. Tanker traffic dropped 90%. Brent crude surged above $100/bbl.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_2f35f49f00f21157b43a818e018dac21.setContent(html_e66eabf07ca436662fd913c59fdba0fc);
+            
+        
+
+        circle_marker_5f75d9c90eb9c69c3707a69b3b9c81a7.bindPopup(popup_2f35f49f00f21157b43a818e018dac21)
+        ;
+
+        
+    
+    
+            circle_marker_5f75d9c90eb9c69c3707a69b3b9c81a7.bindTooltip(
+                `<div>
+                     <b>Strait of Hormuz</b> — CLOSED
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_d947b6729f76d8ca8eeeaedb8b71e62f = L.marker(
+                [28.0667, 56.25],
+                {
+}
+            ).addTo(feature_group_641f34594dd48ce5a1db23c4b2658568);
+        
+    
+            var div_icon_5243b045e97cfa15894132ff18d5acdf = L.divIcon({
+  "html": "\u003cdiv style=\"font-family:Segoe UI,sans-serif;font-size:10px;font-weight:bold;color:#FFD700;text-shadow:0 0 4px #000,0 0 4px #000;white-space:nowrap;\"\u003eStrait of Hormuz\u003c/div\u003e",
+  "iconSize": [200, 20],
+  "iconAnchor": [100, 10],
+  "className": "empty",
+});
+        
+    
+        var popup_1dd88bb079d57e3a8915cca5500a5296 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_c4036cad0c6f37bb7205342bcfe5a6ee = $(`<div id="html_c4036cad0c6f37bb7205342bcfe5a6ee" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Strait of Hormuz       </h3>       <div style="margin-bottom:8px;">         <span style="background:#FF0000;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           CLOSED         </span>         <span style="background:#FF0000;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: CRITICAL         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Between Iran and Oman, connecting the Gulf to the Arabian Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">39 km (21 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">20–21 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">~20% of global oil</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">World's most vital energy chokepoint; sole maritime exit for ~20% of global oil and LNG. Currently CLOSED by Iran (March 2026).</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Iran declared closure on 2 March 2026 following US-Israel Operation Epic Fury. Tanker traffic dropped 90%. Brent crude surged above $100/bbl.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_1dd88bb079d57e3a8915cca5500a5296.setContent(html_c4036cad0c6f37bb7205342bcfe5a6ee);
+            
+        
+
+        marker_d947b6729f76d8ca8eeeaedb8b71e62f.bindPopup(popup_1dd88bb079d57e3a8915cca5500a5296)
+        ;
+
+        
+    
+    
+                marker_d947b6729f76d8ca8eeeaedb8b71e62f.setIcon(div_icon_5243b045e97cfa15894132ff18d5acdf);
+            
+    
+            feature_group_641f34594dd48ce5a1db23c4b2658568.addTo(map_135c34d2d85d829bc48632378a172ddc);
+        
+    
+            var feature_group_0e715efa882d00f86628d620e9aa4739 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_c7233530ab72f85c6abaab379bb310fa = L.circleMarker(
+                [12.5833, 43.3333],
+                {"bubblingMouseEvents": true, "color": "#FF6600", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#FF6600", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
+            ).addTo(feature_group_0e715efa882d00f86628d620e9aa4739);
+        
+    
+        var popup_c806a083ddf4743ade610e482d1c6d0b = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_6a1c75418c30f70a9a8f34f8ae47703d = $(`<div id="html_6a1c75418c30f70a9a8f34f8ae47703d" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Bab al-Mandeb Strait       </h3>       <div style="margin-bottom:8px;">         <span style="background:#FF6600;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           HIGH RISK         </span>         <span style="background:#FF6600;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: HIGH         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Between Yemen and Djibouti, linking the Red Sea to the Gulf of Aden</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">32 km (17 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">4 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">~12% of global trade</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Gateway to the Suez Canal. ~12% of global trade flows daily. Houthi attacks disrupted traffic from 2023-2025.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Houthi attacks have largely ceased with Iran's attentions diverted but risk remains elevated. Maersk has suspended Gulf transits and reroutes via Cape of Good Hope.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_c806a083ddf4743ade610e482d1c6d0b.setContent(html_6a1c75418c30f70a9a8f34f8ae47703d);
+            
+        
+
+        circle_marker_c7233530ab72f85c6abaab379bb310fa.bindPopup(popup_c806a083ddf4743ade610e482d1c6d0b)
+        ;
+
+        
+    
+    
+            circle_marker_c7233530ab72f85c6abaab379bb310fa.bindTooltip(
+                `<div>
+                     <b>Bab al-Mandeb Strait</b> — HIGH RISK
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_fbc0e5db3aff13e90adfb1c94c90b3b0 = L.marker(
+                [14.0833, 43.3333],
+                {
+}
+            ).addTo(feature_group_0e715efa882d00f86628d620e9aa4739);
+        
+    
+            var div_icon_bfbf6a0a5c8892a4a1d8d6500e2a5703 = L.divIcon({
+  "html": "\u003cdiv style=\"font-family:Segoe UI,sans-serif;font-size:10px;font-weight:bold;color:#FFD700;text-shadow:0 0 4px #000,0 0 4px #000;white-space:nowrap;\"\u003eBab al-Mandeb Strait\u003c/div\u003e",
+  "iconSize": [200, 20],
+  "iconAnchor": [100, 10],
+  "className": "empty",
+});
+        
+    
+        var popup_dc08034f7d0a296f0aee5d2a86d20899 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_fb5b50d8650d6644fcfb5895939cf845 = $(`<div id="html_fb5b50d8650d6644fcfb5895939cf845" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Bab al-Mandeb Strait       </h3>       <div style="margin-bottom:8px;">         <span style="background:#FF6600;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           HIGH RISK         </span>         <span style="background:#FF6600;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: HIGH         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Between Yemen and Djibouti, linking the Red Sea to the Gulf of Aden</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">32 km (17 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">4 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">~12% of global trade</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Gateway to the Suez Canal. ~12% of global trade flows daily. Houthi attacks disrupted traffic from 2023-2025.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Houthi attacks have largely ceased with Iran's attentions diverted but risk remains elevated. Maersk has suspended Gulf transits and reroutes via Cape of Good Hope.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_dc08034f7d0a296f0aee5d2a86d20899.setContent(html_fb5b50d8650d6644fcfb5895939cf845);
+            
+        
+
+        marker_fbc0e5db3aff13e90adfb1c94c90b3b0.bindPopup(popup_dc08034f7d0a296f0aee5d2a86d20899)
+        ;
+
+        
+    
+    
+                marker_fbc0e5db3aff13e90adfb1c94c90b3b0.setIcon(div_icon_bfbf6a0a5c8892a4a1d8d6500e2a5703);
+            
+    
+            var circle_marker_e3efee5168eebf294d6a9424894e82bb = L.circleMarker(
+                [30.7, 32.35],
+                {"bubblingMouseEvents": true, "color": "#FFAA00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#FFAA00", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
+            ).addTo(feature_group_0e715efa882d00f86628d620e9aa4739);
+        
+    
+        var popup_c9dd6450be9c5fea14a5b8ed7b7cdce9 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_957896409286a23e762055bd41204511 = $(`<div id="html_957896409286a23e762055bd41204511" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Suez Canal       </h3>       <div style="margin-bottom:8px;">         <span style="background:#FFAA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           REDUCED         </span>         <span style="background:#FF6600;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: HIGH         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Divides the Sinai Peninsula from Egypt, connecting the Mediterranean to the Red Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">225 m (740 ft)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">5 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">~12-15% of global trade</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Shortens Asia-Europe journey by ~8,900 km. Opened 1869. Famous 2021 blockage by Ever Given for 6 days.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Traffic significantly reduced as shipping lines avoid the Hormuz-Red Sea corridor. Maersk and Hapag-Lloyd have suspended Suez Canal transits in March 2026.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_c9dd6450be9c5fea14a5b8ed7b7cdce9.setContent(html_957896409286a23e762055bd41204511);
+            
+        
+
+        circle_marker_e3efee5168eebf294d6a9424894e82bb.bindPopup(popup_c9dd6450be9c5fea14a5b8ed7b7cdce9)
+        ;
+
+        
+    
+    
+            circle_marker_e3efee5168eebf294d6a9424894e82bb.bindTooltip(
+                `<div>
+                     <b>Suez Canal</b> — REDUCED
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_05020c4b423e8482c54a0a436399f0d2 = L.marker(
+                [32.2, 32.35],
+                {
+}
+            ).addTo(feature_group_0e715efa882d00f86628d620e9aa4739);
+        
+    
+            var div_icon_eec29e9e4134364a9d04311f9508550e = L.divIcon({
+  "html": "\u003cdiv style=\"font-family:Segoe UI,sans-serif;font-size:10px;font-weight:bold;color:#FFD700;text-shadow:0 0 4px #000,0 0 4px #000;white-space:nowrap;\"\u003eSuez Canal\u003c/div\u003e",
+  "iconSize": [200, 20],
+  "iconAnchor": [100, 10],
+  "className": "empty",
+});
+        
+    
+        var popup_ec2e0fa3fad79c812081180604e5d740 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_3befc72f857a664367ccdc42ffce1a60 = $(`<div id="html_3befc72f857a664367ccdc42ffce1a60" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Suez Canal       </h3>       <div style="margin-bottom:8px;">         <span style="background:#FFAA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           REDUCED         </span>         <span style="background:#FF6600;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: HIGH         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Divides the Sinai Peninsula from Egypt, connecting the Mediterranean to the Red Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">225 m (740 ft)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">5 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">~12-15% of global trade</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Shortens Asia-Europe journey by ~8,900 km. Opened 1869. Famous 2021 blockage by Ever Given for 6 days.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Traffic significantly reduced as shipping lines avoid the Hormuz-Red Sea corridor. Maersk and Hapag-Lloyd have suspended Suez Canal transits in March 2026.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_ec2e0fa3fad79c812081180604e5d740.setContent(html_3befc72f857a664367ccdc42ffce1a60);
+            
+        
+
+        marker_05020c4b423e8482c54a0a436399f0d2.bindPopup(popup_ec2e0fa3fad79c812081180604e5d740)
+        ;
+
+        
+    
+    
+                marker_05020c4b423e8482c54a0a436399f0d2.setIcon(div_icon_eec29e9e4134364a9d04311f9508550e);
+            
+    
+            var circle_marker_b4252c0c1aa3d244268c410453ba969e = L.circleMarker(
+                [24.25, 119.5],
+                {"bubblingMouseEvents": true, "color": "#FF9900", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#FF9900", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
+            ).addTo(feature_group_0e715efa882d00f86628d620e9aa4739);
+        
+    
+        var popup_9338b2b443bb4179cfac269df7c6a545 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_0005c70174c9c3a67066e666cc20e39c = $(`<div id="html_0005c70174c9c3a67066e666cc20e39c" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Taiwan Strait       </h3>       <div style="margin-bottom:8px;">         <span style="background:#FF9900;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           TENSE         </span>         <span style="background:#FF6600;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: HIGH         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Separates mainland China from Taiwan, connecting the South China Sea to the East China Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">130 km (70 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">N/A (container focus)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">>20% of global maritime trade by value</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Over 20% of global maritime trade by value annually. Nearly half the global container fleet passes here. Most advanced semiconductors transited here.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">China has increased military exercises amid global focus on Middle East. Risk of Taiwan contingency elevated as US forces engaged in Gulf.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_9338b2b443bb4179cfac269df7c6a545.setContent(html_0005c70174c9c3a67066e666cc20e39c);
+            
+        
+
+        circle_marker_b4252c0c1aa3d244268c410453ba969e.bindPopup(popup_9338b2b443bb4179cfac269df7c6a545)
+        ;
+
+        
+    
+    
+            circle_marker_b4252c0c1aa3d244268c410453ba969e.bindTooltip(
+                `<div>
+                     <b>Taiwan Strait</b> — TENSE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_42bfc34b5bbba97c8fcfe3a66dc2f350 = L.marker(
+                [25.75, 119.5],
+                {
+}
+            ).addTo(feature_group_0e715efa882d00f86628d620e9aa4739);
+        
+    
+            var div_icon_bfb7e696c37adfde5a5347e55e8b788a = L.divIcon({
+  "html": "\u003cdiv style=\"font-family:Segoe UI,sans-serif;font-size:10px;font-weight:bold;color:#FFD700;text-shadow:0 0 4px #000,0 0 4px #000;white-space:nowrap;\"\u003eTaiwan Strait\u003c/div\u003e",
+  "iconSize": [200, 20],
+  "iconAnchor": [100, 10],
+  "className": "empty",
+});
+        
+    
+        var popup_00d8ef3edd37a6e7011f34b6bf3d4f9b = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_6baa9d76fc2a0b02e5c15c5a58525226 = $(`<div id="html_6baa9d76fc2a0b02e5c15c5a58525226" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Taiwan Strait       </h3>       <div style="margin-bottom:8px;">         <span style="background:#FF9900;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           TENSE         </span>         <span style="background:#FF6600;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: HIGH         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Separates mainland China from Taiwan, connecting the South China Sea to the East China Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">130 km (70 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">N/A (container focus)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">>20% of global maritime trade by value</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Over 20% of global maritime trade by value annually. Nearly half the global container fleet passes here. Most advanced semiconductors transited here.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">China has increased military exercises amid global focus on Middle East. Risk of Taiwan contingency elevated as US forces engaged in Gulf.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_00d8ef3edd37a6e7011f34b6bf3d4f9b.setContent(html_6baa9d76fc2a0b02e5c15c5a58525226);
+            
+        
+
+        marker_42bfc34b5bbba97c8fcfe3a66dc2f350.bindPopup(popup_00d8ef3edd37a6e7011f34b6bf3d4f9b)
+        ;
+
+        
+    
+    
+                marker_42bfc34b5bbba97c8fcfe3a66dc2f350.setIcon(div_icon_bfb7e696c37adfde5a5347e55e8b788a);
+            
+    
+            feature_group_0e715efa882d00f86628d620e9aa4739.addTo(map_135c34d2d85d829bc48632378a172ddc);
+        
+    
+            var feature_group_8ee807e9b08ba2cdfa895ed296e9a3c8 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_35fe63570710fa4bd24681d1145f4ed8 = L.circleMarker(
+                [-34.3568, 18.473],
+                {"bubblingMouseEvents": true, "color": "#0080FF", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#0080FF", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
+            ).addTo(feature_group_8ee807e9b08ba2cdfa895ed296e9a3c8);
+        
+    
+        var popup_f2859dde2c3c4dc8d8f8de74e72b106d = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_0a93c2e42e6f0e0b7f7b87e68c1d00c2 = $(`<div id="html_0a93c2e42e6f0e0b7f7b87e68c1d00c2" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Cape of Good Hope       </h3>       <div style="margin-bottom:8px;">         <span style="background:#0080FF;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           SURGE         </span>         <span style="background:#00AA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: LOW         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Off the southwestern tip of the Cape Peninsula in South Africa</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">Open Ocean</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">9 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">Rapidly growing — now 11%+ of global trade rerouting</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Alternative route bypassing Middle East. Used by ships too large for Suez. Adds 10-14 days and 3,000-4,000 nm to Asia-Europe journeys.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Cape Town Port records 112% surge in diverted vessels (March 2026). SAMSA on high alert. Transit up 35%+ vs. 7-day averages. Hapag-Lloyd, Maersk, CMA CGM all rerouting here.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_f2859dde2c3c4dc8d8f8de74e72b106d.setContent(html_0a93c2e42e6f0e0b7f7b87e68c1d00c2);
+            
+        
+
+        circle_marker_35fe63570710fa4bd24681d1145f4ed8.bindPopup(popup_f2859dde2c3c4dc8d8f8de74e72b106d)
+        ;
+
+        
+    
+    
+            circle_marker_35fe63570710fa4bd24681d1145f4ed8.bindTooltip(
+                `<div>
+                     <b>Cape of Good Hope</b> — SURGE
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_4dedf1e54bcb583b359ffd068a1269a7 = L.marker(
+                [-32.8568, 18.473],
+                {
+}
+            ).addTo(feature_group_8ee807e9b08ba2cdfa895ed296e9a3c8);
+        
+    
+            var div_icon_a76f79bffda46821b9e196210a84122d = L.divIcon({
+  "html": "\u003cdiv style=\"font-family:Segoe UI,sans-serif;font-size:10px;font-weight:bold;color:#FFD700;text-shadow:0 0 4px #000,0 0 4px #000;white-space:nowrap;\"\u003eCape of Good Hope\u003c/div\u003e",
+  "iconSize": [200, 20],
+  "iconAnchor": [100, 10],
+  "className": "empty",
+});
+        
+    
+        var popup_830b8ba5f2ffa9a3fb63ae7b3f42a58f = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_61efe49ae2600888099e7575dbde4919 = $(`<div id="html_61efe49ae2600888099e7575dbde4919" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Cape of Good Hope       </h3>       <div style="margin-bottom:8px;">         <span style="background:#0080FF;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           SURGE         </span>         <span style="background:#00AA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: LOW         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Off the southwestern tip of the Cape Peninsula in South Africa</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">Open Ocean</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">9 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">Rapidly growing — now 11%+ of global trade rerouting</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Alternative route bypassing Middle East. Used by ships too large for Suez. Adds 10-14 days and 3,000-4,000 nm to Asia-Europe journeys.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Cape Town Port records 112% surge in diverted vessels (March 2026). SAMSA on high alert. Transit up 35%+ vs. 7-day averages. Hapag-Lloyd, Maersk, CMA CGM all rerouting here.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_830b8ba5f2ffa9a3fb63ae7b3f42a58f.setContent(html_61efe49ae2600888099e7575dbde4919);
+            
+        
+
+        marker_4dedf1e54bcb583b359ffd068a1269a7.bindPopup(popup_830b8ba5f2ffa9a3fb63ae7b3f42a58f)
+        ;
+
+        
+    
+    
+                marker_4dedf1e54bcb583b359ffd068a1269a7.setIcon(div_icon_a76f79bffda46821b9e196210a84122d);
+            
+    
+            feature_group_8ee807e9b08ba2cdfa895ed296e9a3c8.addTo(map_135c34d2d85d829bc48632378a172ddc);
+        
+    
+            var feature_group_52c2d7ed8260d961d361c1d4dee951ab = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var circle_marker_29b021be5cd398d6ab227a84d4af9f9a = L.circleMarker(
+                [2.5, 101.3667],
+                {"bubblingMouseEvents": true, "color": "#00CC44", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00CC44", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
+            ).addTo(feature_group_52c2d7ed8260d961d361c1d4dee951ab);
+        
+    
+        var popup_3e02eb3ba0fe9c8965c061db7ae09c19 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_6529f0b2d6109f83ceb26ac64f8f1dfc = $(`<div id="html_6529f0b2d6109f83ceb26ac64f8f1dfc" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Strait of Malacca       </h3>       <div style="margin-bottom:8px;">         <span style="background:#00CC44;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           OPEN         </span>         <span style="background:#FFAA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: MODERATE         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Between Malaysia, Singapore and Indonesia, linking the Indian Ocean to the South China Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">2.8 km (1.5 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">23 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">~40% of global trade</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">World's busiest oil transit chokepoint. ~40% of global trade and 80% of China's oil imports pass through here.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Currently operational but experiencing higher traffic as vessels avoid Hormuz. Regional tension remains due to South China Sea disputes.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_3e02eb3ba0fe9c8965c061db7ae09c19.setContent(html_6529f0b2d6109f83ceb26ac64f8f1dfc);
+            
+        
+
+        circle_marker_29b021be5cd398d6ab227a84d4af9f9a.bindPopup(popup_3e02eb3ba0fe9c8965c061db7ae09c19)
+        ;
+
+        
+    
+    
+            circle_marker_29b021be5cd398d6ab227a84d4af9f9a.bindTooltip(
+                `<div>
+                     <b>Strait of Malacca</b> — OPEN
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_fa329ecf16f0fc56c33edd57cbb3f1d7 = L.marker(
+                [4.0, 101.3667],
+                {
+}
+            ).addTo(feature_group_52c2d7ed8260d961d361c1d4dee951ab);
+        
+    
+            var div_icon_a93a9c436ddfd86d837dca27476fe0ce = L.divIcon({
+  "html": "\u003cdiv style=\"font-family:Segoe UI,sans-serif;font-size:10px;font-weight:bold;color:#FFD700;text-shadow:0 0 4px #000,0 0 4px #000;white-space:nowrap;\"\u003eStrait of Malacca\u003c/div\u003e",
+  "iconSize": [200, 20],
+  "iconAnchor": [100, 10],
+  "className": "empty",
+});
+        
+    
+        var popup_c5c1c422d3582dd76a2d597f41647a14 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_e2940eb5ac9e038ecd321a0bbf3d2e11 = $(`<div id="html_e2940eb5ac9e038ecd321a0bbf3d2e11" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Strait of Malacca       </h3>       <div style="margin-bottom:8px;">         <span style="background:#00CC44;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           OPEN         </span>         <span style="background:#FFAA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: MODERATE         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Between Malaysia, Singapore and Indonesia, linking the Indian Ocean to the South China Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">2.8 km (1.5 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">23 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">~40% of global trade</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">World's busiest oil transit chokepoint. ~40% of global trade and 80% of China's oil imports pass through here.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Currently operational but experiencing higher traffic as vessels avoid Hormuz. Regional tension remains due to South China Sea disputes.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_c5c1c422d3582dd76a2d597f41647a14.setContent(html_e2940eb5ac9e038ecd321a0bbf3d2e11);
+            
+        
+
+        marker_fa329ecf16f0fc56c33edd57cbb3f1d7.bindPopup(popup_c5c1c422d3582dd76a2d597f41647a14)
+        ;
+
+        
+    
+    
+                marker_fa329ecf16f0fc56c33edd57cbb3f1d7.setIcon(div_icon_a93a9c436ddfd86d837dca27476fe0ce);
+            
+    
+            var circle_marker_e1a256b34ec23b96019336e4ca607dfe = L.circleMarker(
+                [9.08, -79.68],
+                {"bubblingMouseEvents": true, "color": "#00AA00", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00AA00", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
+            ).addTo(feature_group_52c2d7ed8260d961d361c1d4dee951ab);
+        
+    
+        var popup_1d71381e7670f8e4cfc27d7fc9fed9e6 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_e369e37ae52c0c0375e34606366bdbec = $(`<div id="html_e369e37ae52c0c0375e34606366bdbec" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Panama Canal       </h3>       <div style="margin-bottom:8px;">         <span style="background:#00AA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           OPERATIONAL         </span>         <span style="background:#FFAA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: MODERATE         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Cuts through Panama, connecting the Caribbean Sea to the Pacific Ocean</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">222 m (730 ft)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">2–3 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">~5% of global trade</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Conduit for 40% of US container traffic. Handles >95% of US LPG exports to Asia. Opened 1914 with lock system.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Recovering from 2024-2025 drought restrictions. Seeing unexpected 8-10% toll revenue boost as some Asia-US West Coast traffic reroutes via Pacific. Geopolitical pressure from US tariff threats on Panama.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_1d71381e7670f8e4cfc27d7fc9fed9e6.setContent(html_e369e37ae52c0c0375e34606366bdbec);
+            
+        
+
+        circle_marker_e1a256b34ec23b96019336e4ca607dfe.bindPopup(popup_1d71381e7670f8e4cfc27d7fc9fed9e6)
+        ;
+
+        
+    
+    
+            circle_marker_e1a256b34ec23b96019336e4ca607dfe.bindTooltip(
+                `<div>
+                     <b>Panama Canal</b> — OPERATIONAL
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_ffd64a3a33b90012133a129119620982 = L.marker(
+                [10.58, -79.68],
+                {
+}
+            ).addTo(feature_group_52c2d7ed8260d961d361c1d4dee951ab);
+        
+    
+            var div_icon_243ebf352aceaa045461ec2a555a5270 = L.divIcon({
+  "html": "\u003cdiv style=\"font-family:Segoe UI,sans-serif;font-size:10px;font-weight:bold;color:#FFD700;text-shadow:0 0 4px #000,0 0 4px #000;white-space:nowrap;\"\u003ePanama Canal\u003c/div\u003e",
+  "iconSize": [200, 20],
+  "iconAnchor": [100, 10],
+  "className": "empty",
+});
+        
+    
+        var popup_adc2498fdbd88db5d7f86b3df24c0ff8 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_2e63c2a6dbed3c7cb729e3db5854a1cc = $(`<div id="html_2e63c2a6dbed3c7cb729e3db5854a1cc" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Panama Canal       </h3>       <div style="margin-bottom:8px;">         <span style="background:#00AA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           OPERATIONAL         </span>         <span style="background:#FFAA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: MODERATE         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Cuts through Panama, connecting the Caribbean Sea to the Pacific Ocean</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">222 m (730 ft)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">2–3 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">~5% of global trade</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Conduit for 40% of US container traffic. Handles >95% of US LPG exports to Asia. Opened 1914 with lock system.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Recovering from 2024-2025 drought restrictions. Seeing unexpected 8-10% toll revenue boost as some Asia-US West Coast traffic reroutes via Pacific. Geopolitical pressure from US tariff threats on Panama.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_adc2498fdbd88db5d7f86b3df24c0ff8.setContent(html_2e63c2a6dbed3c7cb729e3db5854a1cc);
+            
+        
+
+        marker_ffd64a3a33b90012133a129119620982.bindPopup(popup_adc2498fdbd88db5d7f86b3df24c0ff8)
+        ;
+
+        
+    
+    
+                marker_ffd64a3a33b90012133a129119620982.setIcon(div_icon_243ebf352aceaa045461ec2a555a5270);
+            
+    
+            var circle_marker_1a3c136c439e12b00612e30157d0fb22 = L.circleMarker(
+                [35.95, -5.4833],
+                {"bubblingMouseEvents": true, "color": "#00CC44", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00CC44", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
+            ).addTo(feature_group_52c2d7ed8260d961d361c1d4dee951ab);
+        
+    
+        var popup_5a7102e9f153bb63ad51b5672942a789 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_be9a229f9f1f976990581b634ddcf50b = $(`<div id="html_be9a229f9f1f976990581b634ddcf50b" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Strait of Gibraltar       </h3>       <div style="margin-bottom:8px;">         <span style="background:#00CC44;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           OPEN         </span>         <span style="background:#00AA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: LOW         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Between Spain and Morocco, linking the Atlantic Ocean to the Mediterranean Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">13 km (7 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">5–6 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">Gateway to Mediterranean and Suez routes</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Only natural maritime link between Atlantic and Mediterranean. Western entry point for all Suez-bound shipping.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Operational but throughput has declined as Suez Canal traffic drops. Atlantic-facing ports Rotterdam and Hamburg now capturing more Cape-routed traffic.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_5a7102e9f153bb63ad51b5672942a789.setContent(html_be9a229f9f1f976990581b634ddcf50b);
+            
+        
+
+        circle_marker_1a3c136c439e12b00612e30157d0fb22.bindPopup(popup_5a7102e9f153bb63ad51b5672942a789)
+        ;
+
+        
+    
+    
+            circle_marker_1a3c136c439e12b00612e30157d0fb22.bindTooltip(
+                `<div>
+                     <b>Strait of Gibraltar</b> — OPEN
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_7c22b7d19cb7c8ffb41b903a8b96b9af = L.marker(
+                [37.45, -5.4833],
+                {
+}
+            ).addTo(feature_group_52c2d7ed8260d961d361c1d4dee951ab);
+        
+    
+            var div_icon_15c44064978c321fc9efd78cb270ddfe = L.divIcon({
+  "html": "\u003cdiv style=\"font-family:Segoe UI,sans-serif;font-size:10px;font-weight:bold;color:#FFD700;text-shadow:0 0 4px #000,0 0 4px #000;white-space:nowrap;\"\u003eStrait of Gibraltar\u003c/div\u003e",
+  "iconSize": [200, 20],
+  "iconAnchor": [100, 10],
+  "className": "empty",
+});
+        
+    
+        var popup_6f02275fa356bb7febae8c81f44a5a0d = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_9f6184e889246830a70337d4d99f1da9 = $(`<div id="html_9f6184e889246830a70337d4d99f1da9" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Strait of Gibraltar       </h3>       <div style="margin-bottom:8px;">         <span style="background:#00CC44;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           OPEN         </span>         <span style="background:#00AA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: LOW         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Between Spain and Morocco, linking the Atlantic Ocean to the Mediterranean Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">13 km (7 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">5–6 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">Gateway to Mediterranean and Suez routes</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Only natural maritime link between Atlantic and Mediterranean. Western entry point for all Suez-bound shipping.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Operational but throughput has declined as Suez Canal traffic drops. Atlantic-facing ports Rotterdam and Hamburg now capturing more Cape-routed traffic.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_6f02275fa356bb7febae8c81f44a5a0d.setContent(html_9f6184e889246830a70337d4d99f1da9);
+            
+        
+
+        marker_7c22b7d19cb7c8ffb41b903a8b96b9af.bindPopup(popup_6f02275fa356bb7febae8c81f44a5a0d)
+        ;
+
+        
+    
+    
+                marker_7c22b7d19cb7c8ffb41b903a8b96b9af.setIcon(div_icon_15c44064978c321fc9efd78cb270ddfe);
+            
+    
+            var circle_marker_1a6be04ab3cc40b28b6e2b3ca180fb91 = L.circleMarker(
+                [41.11, 29.05],
+                {"bubblingMouseEvents": true, "color": "#00CC44", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00CC44", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
+            ).addTo(feature_group_52c2d7ed8260d961d361c1d4dee951ab);
+        
+    
+        var popup_b45d9fbb5623bb31f0060a0708edc11e = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_e9dbbff738a8766307a2a0d931b2e157 = $(`<div id="html_e9dbbff738a8766307a2a0d931b2e157" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Turkish Straits (Bosphorus)       </h3>       <div style="margin-bottom:8px;">         <span style="background:#00CC44;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           OPEN         </span>         <span style="background:#FFAA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: MODERATE         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Through Istanbul, linking the Black Sea to the Mediterranean</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">700 m (2,300 ft)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">3–4 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">Key Russian & Caspian oil transit</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Comprising Bosphorus and Dardanelles. Only maritime link between Black Sea and Mediterranean. Vital for Russian and Caspian oil exports.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Turkey approved passage of a Turkish ship through Hormuz on 13 March 2026. Istanbul straits operational; Russia rerouting some oil via Black Sea due to overall market shifts.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_b45d9fbb5623bb31f0060a0708edc11e.setContent(html_e9dbbff738a8766307a2a0d931b2e157);
+            
+        
+
+        circle_marker_1a6be04ab3cc40b28b6e2b3ca180fb91.bindPopup(popup_b45d9fbb5623bb31f0060a0708edc11e)
+        ;
+
+        
+    
+    
+            circle_marker_1a6be04ab3cc40b28b6e2b3ca180fb91.bindTooltip(
+                `<div>
+                     <b>Turkish Straits (Bosphorus)</b> — OPEN
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_50a5706373f1da25ff57611c3da5b86c = L.marker(
+                [42.61, 29.05],
+                {
+}
+            ).addTo(feature_group_52c2d7ed8260d961d361c1d4dee951ab);
+        
+    
+            var div_icon_ebc030e34d1eda2f3216fd2632ee8b4b = L.divIcon({
+  "html": "\u003cdiv style=\"font-family:Segoe UI,sans-serif;font-size:10px;font-weight:bold;color:#FFD700;text-shadow:0 0 4px #000,0 0 4px #000;white-space:nowrap;\"\u003eTurkish Straits (Bosphorus)\u003c/div\u003e",
+  "iconSize": [200, 20],
+  "iconAnchor": [100, 10],
+  "className": "empty",
+});
+        
+    
+        var popup_be1506585597e4eee5387513204f292f = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_d77665c36050080e8209ccafa49fd6dc = $(`<div id="html_d77665c36050080e8209ccafa49fd6dc" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Turkish Straits (Bosphorus)       </h3>       <div style="margin-bottom:8px;">         <span style="background:#00CC44;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           OPEN         </span>         <span style="background:#FFAA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: MODERATE         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Through Istanbul, linking the Black Sea to the Mediterranean</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">700 m (2,300 ft)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">3–4 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">Key Russian & Caspian oil transit</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Comprising Bosphorus and Dardanelles. Only maritime link between Black Sea and Mediterranean. Vital for Russian and Caspian oil exports.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Turkey approved passage of a Turkish ship through Hormuz on 13 March 2026. Istanbul straits operational; Russia rerouting some oil via Black Sea due to overall market shifts.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_be1506585597e4eee5387513204f292f.setContent(html_d77665c36050080e8209ccafa49fd6dc);
+            
+        
+
+        marker_50a5706373f1da25ff57611c3da5b86c.bindPopup(popup_be1506585597e4eee5387513204f292f)
+        ;
+
+        
+    
+    
+                marker_50a5706373f1da25ff57611c3da5b86c.setIcon(div_icon_ebc030e34d1eda2f3216fd2632ee8b4b);
+            
+    
+            var circle_marker_5c01ae6ea099d0d7b6d5ae92f092119b = L.circleMarker(
+                [55.65, 10.6],
+                {"bubblingMouseEvents": true, "color": "#00CC44", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "#00CC44", "fillOpacity": 0.8, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 10, "stroke": true, "weight": 2}
+            ).addTo(feature_group_52c2d7ed8260d961d361c1d4dee951ab);
+        
+    
+        var popup_87dfa44c0dd6cc2102cf58e190832206 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_57d7ce0bbbca0674623500c84e6f4532 = $(`<div id="html_57d7ce0bbbca0674623500c84e6f4532" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Danish Straits       </h3>       <div style="margin-bottom:8px;">         <span style="background:#00CC44;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           OPEN         </span>         <span style="background:#FFAA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: MODERATE         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Separates Denmark from Sweden, connecting the Baltic Sea to the North Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">3.7 km (2 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">5 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">Key Russian Baltic oil exit</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Primary exit for Russian oil from Baltic ports. Crucial link for Northern Europe to global markets.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Operational. Increased scrutiny on Russian Baltic crude flows amid broader Middle East conflict. NATO monitoring of Baltic sea increased.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_87dfa44c0dd6cc2102cf58e190832206.setContent(html_57d7ce0bbbca0674623500c84e6f4532);
+            
+        
+
+        circle_marker_5c01ae6ea099d0d7b6d5ae92f092119b.bindPopup(popup_87dfa44c0dd6cc2102cf58e190832206)
+        ;
+
+        
+    
+    
+            circle_marker_5c01ae6ea099d0d7b6d5ae92f092119b.bindTooltip(
+                `<div>
+                     <b>Danish Straits</b> — OPEN
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_d71592d4c1f596a39d99ba3b69412020 = L.marker(
+                [57.15, 10.6],
+                {
+}
+            ).addTo(feature_group_52c2d7ed8260d961d361c1d4dee951ab);
+        
+    
+            var div_icon_43f7a2b28de2bf02cc932cfddc629761 = L.divIcon({
+  "html": "\u003cdiv style=\"font-family:Segoe UI,sans-serif;font-size:10px;font-weight:bold;color:#FFD700;text-shadow:0 0 4px #000,0 0 4px #000;white-space:nowrap;\"\u003eDanish Straits\u003c/div\u003e",
+  "iconSize": [200, 20],
+  "iconAnchor": [100, 10],
+  "className": "empty",
+});
+        
+    
+        var popup_5481559c7f8e04acb91fc19ce79d8d55 = L.popup({
+  "maxWidth": 360,
+});
+
+        
+            
+                var html_428ee76ef66487fd91c39f5145e3196d = $(`<div id="html_428ee76ef66487fd91c39f5145e3196d" style="width: 100.0%; height: 100.0%;">     <div style="font-family:'Segoe UI',sans-serif;width:340px;background:#1a1a2e;color:#e0e0e0;border-radius:10px;padding:15px;box-shadow:0 4px 15px rgba(0,0,0,0.5);">       <h3 style="margin:0 0 8px;color:#FFD700;font-size:15px;border-bottom:1px solid #444;padding-bottom:6px;">         Danish Straits       </h3>       <div style="margin-bottom:8px;">         <span style="background:#00CC44;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;">           OPEN         </span>         <span style="background:#FFAA00;color:#fff;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:bold;margin-left:6px;">           RISK: MODERATE         </span>       </div>       <table style="width:100%;font-size:12px;border-collapse:collapse;">         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;width:38%;">📍 Location</td>           <td style="padding:4px 0;">Separates Denmark from Sweden, connecting the Baltic Sea to the North Sea</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📏 Width</td>           <td style="padding:4px 0;">3.7 km (2 nautical miles)</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">🛢️ Oil Flow</td>           <td style="padding:4px 0;">5 million bbl/day</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">📦 Trade Share</td>           <td style="padding:4px 0;">Key Russian Baltic oil exit</td>         </tr>         <tr style="border-bottom:1px solid #333;">           <td style="padding:4px 0;color:#AAA;">ℹ️ Significance</td>           <td style="padding:4px 0;">Primary exit for Russian oil from Baltic ports. Crucial link for Northern Europe to global markets.</td>         </tr>         <tr>           <td style="padding:4px 0;color:#FFD700;vertical-align:top;">⚡ Now</td>           <td style="padding:4px 0;color:#FFD700;">Operational. Increased scrutiny on Russian Baltic crude flows amid broader Middle East conflict. NATO monitoring of Baltic sea increased.</td>         </tr>       </table>     </div>     </div>`)[0];
+                popup_5481559c7f8e04acb91fc19ce79d8d55.setContent(html_428ee76ef66487fd91c39f5145e3196d);
+            
+        
+
+        marker_d71592d4c1f596a39d99ba3b69412020.bindPopup(popup_5481559c7f8e04acb91fc19ce79d8d55)
+        ;
+
+        
+    
+    
+                marker_d71592d4c1f596a39d99ba3b69412020.setIcon(div_icon_43f7a2b28de2bf02cc932cfddc629761);
+            
+    
+            feature_group_52c2d7ed8260d961d361c1d4dee951ab.addTo(map_135c34d2d85d829bc48632378a172ddc);
+        
+    
+            var tile_layer_a8a731b4875c2c0672fc3e69c3cd3eb6 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e", "detect_retina": false, "max_native_zoom": 20, "max_zoom": 20, "min_zoom": 0, "no_wrap": false, "opacity": 1, "subdomains": "abcd", "tms": false}
+            );
+            var mini_map_84626fbfe002cb54da52a29421b195bf = new L.Control.MiniMap(
+                tile_layer_a8a731b4875c2c0672fc3e69c3cd3eb6,
+                {
+  "position": "bottomright",
+  "width": 150,
+  "height": 150,
+  "collapsedWidth": 25,
+  "collapsedHeight": 25,
+  "zoomLevelOffset": -5,
+  "centerFixed": false,
+  "zoomAnimation": false,
+  "toggleDisplay": true,
+  "autoToggleDisplay": false,
+  "minimized": false,
+}
+            );
+            map_135c34d2d85d829bc48632378a172ddc.addControl(mini_map_84626fbfe002cb54da52a29421b195bf);
+        
+    
+            var mouse_position_e1befa1f7aa40069c10fc347210104cc = new L.Control.MousePosition(
+                {
+  "position": "bottomright",
+  "separator": " : ",
+  "emptyString": "Unavailable",
+  "lngFirst": false,
+  "numDigits": 5,
+  "prefix": "",
+}
+            );
+            mouse_position_e1befa1f7aa40069c10fc347210104cc.options["latFormatter"] =
+                undefined;
+            mouse_position_e1befa1f7aa40069c10fc347210104cc.options["lngFormatter"] =
+                undefined;
+            map_135c34d2d85d829bc48632378a172ddc.addControl(mouse_position_e1befa1f7aa40069c10fc347210104cc);
+        
+    
+            var layer_control_199e4b6b1799cb27c41cc8a65e1c6e89_layers = {
+                base_layers : {
+                    "Dark Map" : tile_layer_67fd072a9306c61277b21245e4536ff4,
+                    "Satellite" : tile_layer_3d1fccf376ae70691f0aab4ac49c1d0e,
+                },
+                overlays :  {
+                    "\ud83d\udef3\ufe0f Shipping Routes" : feature_group_233d75ac0db42ad3e7f4e06f5860b32b,
+                    "\ud83d\udd34 Critical / Closed" : feature_group_641f34594dd48ce5a1db23c4b2658568,
+                    "\ud83d\udfe0 High Risk / Reduced" : feature_group_0e715efa882d00f86628d620e9aa4739,
+                    "\ud83d\udd35 Special Events (Surge / Tense)" : feature_group_8ee807e9b08ba2cdfa895ed296e9a3c8,
+                    "\ud83d\udfe2 Open / Operational" : feature_group_52c2d7ed8260d961d361c1d4dee951ab,
+                },
+            };
+            let layer_control_199e4b6b1799cb27c41cc8a65e1c6e89 = L.control.layers(
+                layer_control_199e4b6b1799cb27c41cc8a65e1c6e89_layers.base_layers,
+                layer_control_199e4b6b1799cb27c41cc8a65e1c6e89_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": false,
+  "autoZIndex": true,
+}
+            ).addTo(map_135c34d2d85d829bc48632378a172ddc);
+
+        
+</script>
+</html>
