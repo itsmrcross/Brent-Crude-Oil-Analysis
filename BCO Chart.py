@@ -158,6 +158,6 @@ col3.markdown(f"""
 st.markdown("## Full Data Table")
 
 st.dataframe(
-    df.drop(columns=["Change_numeric"]),
+    df,
     use_container_width=True
 )
