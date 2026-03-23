@@ -63,11 +63,10 @@ df = pd.DataFrame(data, columns=columns)
 # ✅ FIX: Create proper Change column
 df["Change"] = df["Change_numeric"].apply(lambda x: f"{x:+.2f}%")
 
-# ---------------- CHART ----------------
 # ---------------- CHART + METRICS SIDE BY SIDE ----------------
 st.markdown("## Brent Crude Oil Price Trend & Key Metrics")
 
-chart_col, metrics_col = st.columns([3, 1])  # 3:1 ratio (chart bigger)
+chart_col, metrics_col = st.columns([4, 1])  # bigger chart
 
 # -------- LEFT: CHART --------
 with chart_col:
@@ -93,7 +92,7 @@ with chart_col:
 
     fig.update_traces(
         line=dict(color="#13008D", width=3),
-        marker=dict(size=8),
+        marker=dict(size=6),
     )
 
     fig.update_layout(
@@ -104,7 +103,7 @@ with chart_col:
         annotations=[]
     )
 
-    # Smart callouts (FIXED: using "Change", not "Change (%)")
+    # Smart callouts
     for i in range(len(df)):
         change = df["Change_numeric"].iloc[i]
 
@@ -114,17 +113,16 @@ with chart_col:
             fig.add_annotation(
                 x=df["Date"].iloc[i],
                 y=df["Price"].iloc[i],
-                text=f"{df['Change'].iloc[i]}<br>{str(df['Key Quote'].iloc[i])[:60]}...",
+                text=f"{df['Change'].iloc[i]}<br>{str(df['Key Quote'].iloc[i])[:50]}...",
                 showarrow=True,
                 arrowhead=2,
                 arrowcolor=color,
                 ax=0,
-                ay=-100 if change > 0 else 100,
+                ay=-80 if change > 0 else 80,
                 bgcolor="rgba(0,0,0,0.7)",
                 bordercolor=color,
                 borderwidth=1,
-                font=dict(size=11, color="white"),
-                align="center"
+                font=dict(size=10, color="white"),
             )
 
     st.plotly_chart(fig, use_container_width=True)
@@ -138,31 +136,31 @@ with metrics_col:
     lowest = df['Price'].min()
     average = round(df['Price'].mean(), 2)
 
+    # 🔴 Highest (RED)
     st.markdown(f"""
-    <div style="padding:20px;border-radius:15px;background-color:#0f1f0f;text-align:center;margin-bottom:15px;box-shadow:0 0 15px #00ff00;">
-    <h4 style="color:white;">Highest</h4>
-    <h2 style="color:#00ff00;">${highest}</h2>
+    <div style="padding:12px;border-radius:10px;background-color:#1a0f0f;text-align:center;margin-bottom:10px;">
+        <h6 style="color:white;margin:0;">Highest</h6>
+        <h3 style="color:#ff4d4d;margin:0;">${highest}</h3>
     </div>
     """, unsafe_allow_html=True)
 
+    # 🟢 Lowest (GREEN)
     st.markdown(f"""
-    <div style="padding:20px;border-radius:15px;background-color:#1f0f0f;text-align:center;margin-bottom:15px;box-shadow:0 0 15px #ff0000;">
-    <h4 style="color:white;">Lowest</h4>
-    <h2 style="color:#ff4d4d;">${lowest}</h2>
+    <div style="padding:12px;border-radius:10px;background-color:#0f1a0f;text-align:center;margin-bottom:10px;">
+        <h6 style="color:white;margin:0;">Lowest</h6>
+        <h3 style="color:#00ff88;margin:0;">${lowest}</h3>
     </div>
     """, unsafe_allow_html=True)
 
+    # ⚪ Average (NEUTRAL)
     st.markdown(f"""
-    <div style="padding:20px;border-radius:15px;background-color:#111;text-align:center;">
-    <h4 style="color:white;">Average</h4>
-    <h2 style="color:#ccc;">${average}</h2>
+    <div style="padding:12px;border-radius:10px;background-color:#111;text-align:center;">
+        <h6 style="color:white;margin:0;">Average</h6>
+        <h3 style="color:#cccccc;margin:0;">${average}</h3>
     </div>
     """, unsafe_allow_html=True)
-
-col1.metric("Highest Price", f"${highest}")
-col2.metric("Lowest Price", f"${lowest}")
-col3.metric("Average Price", f"${average}")
 
 # ---------------- TABLE ----------------
 st.markdown("## Full Data Table")
+
 st.dataframe(df, use_container_width=True)
