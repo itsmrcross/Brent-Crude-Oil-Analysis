@@ -164,3 +164,13 @@ with metrics_col:
 st.markdown("## Full Data Table")
 
 st.dataframe(df, use_container_width=True)
+
+# ---------------- MAP ----------------
+import streamlit.components.v1 as components
+
+st.markdown("## Global Impact Map")
+
+with open("strategic_waterways_map.html", "r", encoding="utf-8") as f:
+    map_html = f.read()
+
+components.html(map_html, height=600)
