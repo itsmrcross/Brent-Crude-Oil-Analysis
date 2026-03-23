@@ -23,12 +23,10 @@ p, span, div {
 st.title("Closure of Strait of Hormuz: Impact on Brent Crude")
 st.subheader("28 February to Present")
 
-# ---------------- LOAD DATA ----------------
-
-# ---------------- FULL DATASET (CLEANED) ----------------
+# ---------------- DATA ----------------
 
 data = [
-    ["2026-02-28","Breakdown of U.S.–Iran negotiations",70.89,2.45,"Positive","Diplomatic Breakdown","Trump / Iran",-0.5,"No OPEC response","Risk premium","Conflict fears rising","I'm not happy with Iran"],
+    ["2026-02-28","Breakdown of U.S. Iran negotiations",70.89,2.45,"Positive","Diplomatic Breakdown","Trump / Iran",-0.5,"No OPEC response","Risk premium","Conflict fears rising","I'm not happy with Iran"],
     ["2026-03-01","Hormuz closure begins",78.22,6.82,"Positive","Chokepoint Closure","Iran IRGC",-12,"OPEC+ minor increase","Supply shock","Largest disruption","No ship allowed"],
     ["2026-03-02","US-Israel strikes Iran",77.74,7.26,"Positive","Military Escalation","US / Israel / Iran",-13,"Russian oil waiver","Escalation fears","Second rally","Ships will burn"],
     ["2026-03-03","Production shutdowns",81.40,4.71,"Positive","Shutdown","Saudi / Kuwait / UAE",-15,"Rerouting pipelines","Supply cut","15% supply hit","Escort tankers"],
@@ -38,7 +36,7 @@ data = [
     ["2026-03-07","Stabilisation",92.86,0.00,"Negative","Stability","Iran President",-17,"Talks hinted","No change","Flat trading","Conditional peace"],
     ["2026-03-08","Partial reopening",90.10,-2.97,"Negative","Partial Recovery","China / Iran",1,"China talks","Relief","Profit taking","Selective access"],
     ["2026-03-09","Infrastructure attacks",94.20,4.55,"Positive","Infrastructure Attack","Iran / UAE",-18,"Airspace closure","Renewed risk","Back above $94","Missile defense active"],
-    ["2026-03-10","SPR talks",93.50,-0.74,"Negative","Policy","IEA",-0.0,"400mb planned","Relief","Temporary drop","Largest disruption"],
+    ["2026-03-10","SPR talks",93.50,-0.74,"Negative","Policy","IEA",0,"400mb planned","Relief","Temporary drop","Largest disruption"],
     ["2026-03-11","SPR release + strikes",98.76,5.62,"Positive","Policy + Escalation","IEA / Iran",-18,"SPR announced","Insufficient supply","Prices surge","Temporary fix"],
     ["2026-03-12","Oil crosses $100",101.43,2.70,"Positive","Supply Loss","IEA",-8,"IEA confirms loss","Shortage confirmed","Break $100","Supply drop"],
     ["2026-03-13","Forecast upgrades",103.88,2.42,"Positive","Forecast","Goldman Sachs",-8,"Bullish outlook","Momentum buying","Prices rise","War panic ahead"],
@@ -55,34 +53,17 @@ data = [
 ]
 
 columns = [
-    "Date",
-    "Headline Event",
-    "Price",
-    "Change_numeric",
-    "Impact",
-    "Event Category",
-    "Key Actors",
-    "Supply Impact (mb/d net)",
-    "OPEC/IEA/Policy Response",
-    "Price Mechanism",
-    "Day-on-Day Narrative",
-    "Key Quote"
+    "Date","Headline Event","Price","Change_numeric","Impact","Event Category",
+    "Key Actors","Supply Impact (mb/d net)","OPEC/IEA/Policy Response",
+    "Price Mechanism","Day-on-Day Narrative","Key Quote"
 ]
 
 df = pd.DataFrame(data, columns=columns)
 
-df["Change_numeric"] = (
-    df["Change (%)"]
-    .astype(str)
-    .str.replace("%", "", regex=False)
-    .str.replace("+", "", regex=False)
-    .str.strip()
-    .astype(float)
-)
+# ✅ FIX: Create proper Change column
+df["Change"] = df["Change_numeric"].apply(lambda x: f"{x:+.2f}%")
 
-df["Change (%)"] = df["Change_numeric"].apply(lambda x: f"{x:+.2f}%")
-
-# ---------------- CHART (TOP PRIORITY) ----------------
+# ---------------- CHART ----------------
 st.markdown("## Brent Crude Oil Price Trend")
 
 fig = px.line(
@@ -92,82 +73,44 @@ fig = px.line(
     title="Brent Crude Oil Prices Over Time",
     markers=True,
     hover_data=[
-        "Headline Event",
-        "Impact",
-        "Event Category",
-        "Key Actors",
-        "Supply Impact (mb/d net)",
-        "OPEC/IEA/Policy Response",
-        "Price Mechanism",
-        "Day-on-Day Narrative",
-        "Key Quote",
-        "Change (%)"
+        "Headline Event","Impact","Event Category","Key Actors",
+        "Supply Impact (mb/d net)","OPEC/IEA/Policy Response",
+        "Price Mechanism","Day-on-Day Narrative","Key Quote","Change"
     ]
 )
 
-fig.update_traces(
-    line=dict(color="#13008D", width=3),
-    marker=dict(size=8),
-    hoverlabel=dict(
-        font=dict(
-            family="Montserrat, sans-serif",
-            size=12
-        )
-    )
-)
+fig.update_traces(line=dict(color="#13008D", width=3), marker=dict(size=8))
 
 fig.update_layout(
     template="plotly_dark",
     hovermode="x unified",
     xaxis_title="Date",
-    yaxis_title="Price ($/Barrel)",
-    font=dict(
-        family="Montserrat, sans-serif",
-        size=12,
-        color="white"
-    ),
-    title_font=dict(
-        family="Montserrat, sans-serif",
-        size=18
-    ),
-    legend=dict(
-        font=dict(family="Montserrat, sans-serif")
-    )
+    yaxis_title="Price ($/Barrel)"
 )
 
-# Clear default annotations
 fig.update_layout(annotations=[])
 
-# ---------------- SMART CALLOUTS ----------------
+# ---------------- CALLOUTS ----------------
 for i in range(len(df)):
     change = df["Change_numeric"].iloc[i]
 
     if change > 5 or change < -5:
-
         color = "#00FFAA" if change > 0 else "#FF4B4B"
 
         fig.add_annotation(
             x=df["Date"].iloc[i],
             y=df["Price"].iloc[i],
-
-            text=f"{df['Change (%)'].iloc[i]}<br>{str(df['Key Quote'].iloc[i])[:60]}...",
-
+            text=f"{df['Change'].iloc[i]}<br>{str(df['Key Quote'].iloc[i])[:60]}...",
             showarrow=True,
             arrowhead=2,
             arrowcolor=color,
-
             ax=0,
             ay=-100 if change > 0 else 100,
-
             bgcolor="rgba(0,0,0,0.7)",
             bordercolor=color,
-            borderwidth=1,
-
-            font=dict(family="Montserrat, sans-serif", size=11, color="white"),
-            align="center"
+            borderwidth=1
         )
 
-# SHOW CHART
 st.plotly_chart(fig, use_container_width=True)
 
 # ---------------- METRICS ----------------
@@ -179,34 +122,10 @@ average = round(df['Price'].mean(), 2)
 
 col1, col2, col3 = st.columns(3)
 
-# Highest (Green Glow)
-col1.markdown(f"""
-<div style="padding:20px;border-radius:15px;background-color:#0f1f0f;text-align:center;box-shadow:0 0 15px #00ff00;">
-<h4 style="color:white;">Highest Price</h4>
-<h2 style="color:#00ff00;">${highest}</h2>
-</div>
-""", unsafe_allow_html=True)
-
-# Lowest (Red Glow)
-col2.markdown(f"""
-<div style="padding:20px;border-radius:15px;background-color:#1f0f0f;text-align:center;box-shadow:0 0 15px #ff0000;">
-<h4 style="color:white;">Lowest Price</h4>
-<h2 style="color:#ff4d4d;">${lowest}</h2>
-</div>
-""", unsafe_allow_html=True)
-
-# Average
-col3.markdown(f"""
-<div style="padding:20px;border-radius:15px;background-color:#111;text-align:center;">
-<h4 style="color:white;">Average Price</h4>
-<h2 style="color:#ccc;">${average}</h2>
-</div>
-""", unsafe_allow_html=True)
+col1.metric("Highest Price", f"${highest}")
+col2.metric("Lowest Price", f"${lowest}")
+col3.metric("Average Price", f"${average}")
 
 # ---------------- TABLE ----------------
 st.markdown("## Full Data Table")
-
-st.dataframe(
-    df,
-    use_container_width=True
-)
+st.dataframe(df, use_container_width=True)
