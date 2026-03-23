@@ -33,7 +33,14 @@ st.write("Columns:", df.columns)
 df.columns = df.columns.str.strip()
 
 # ---------------- FORMAT DATA ----------------
-df["Change_numeric"] = df["Change"].astype(str).str.replace('%', '').astype(float)
+df["Change_numeric"] = (
+    df["Change (%)"]
+    .astype(str)
+    .str.replace("%", "", regex=False)
+    .str.replace("+", "", regex=False)
+    .str.strip()
+    .astype(float)
+)
 df["Change"] = df["Change_numeric"].apply(lambda x: f"{x:+.2f}%")
 
 # ---------------- CHART (TOP PRIORITY) ----------------
