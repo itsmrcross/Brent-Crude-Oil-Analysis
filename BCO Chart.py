@@ -132,49 +132,45 @@ with chart_col:
 
 # -------- RIGHT: METRICS --------
 with metrics_col:
-st.markdown("## Key Metrics")
+    st.markdown("## Key Metrics")
 
-# ---------------- CALCULATIONS ----------------
+    # ---------------- CALCULATIONS ----------------
 
-# Largest Increase
-max_increase = df["Change_numeric"].max()
+    max_increase = df["Change_numeric"].max()
+    max_decrease = df["Change_numeric"].min()
 
-# Largest Decrease
-max_decrease = df["Change_numeric"].min()
+    increase_text = f"{max_increase:.2f}% Increase"
+    decrease_text = f"{abs(max_decrease):.2f}% Decrease"
 
-# Format values
-increase_text = f"{max_increase:.2f}% Increase"
-decrease_text = f"{abs(max_decrease):.2f}% Decrease"
+    # ---------------- LAYOUT ----------------
 
-# ---------------- LAYOUT ----------------
+    metric_col1, metric_col2 = st.columns(2)
 
-metric_col1, metric_col2 = st.columns(2)
+    # 🔴 Increase
+    metric_col1.markdown(f"""
+    <div style="
+        padding:12px;
+        border-radius:12px;
+        background-color:#1a0000;
+        text-align:center;
+        border:1px solid #ff4b4b;">
+        <h5 style="color:white;margin-bottom:5px;">Top Increase</h5>
+        <h3 style="color:#ff4b4b;margin:0;">{increase_text}</h3>
+    </div>
+    """, unsafe_allow_html=True)
 
-# 🔴 Increase (RED)
-metric_col1.markdown(f"""
-<div style="
-    padding:12px;
-    border-radius:12px;
-    background-color:#1a0000;
-    text-align:center;
-    border:1px solid #ff4b4b;">
-    <h5 style="color:white;margin-bottom:5px;">Top Increase</h5>
-    <h3 style="color:#ff4b4b;margin:0;">{increase_text}</h3>
-</div>
-""", unsafe_allow_html=True)
-
-# 🟢 Decrease (GREEN)
-metric_col2.markdown(f"""
-<div style="
-    padding:12px;
-    border-radius:12px;
-    background-color:#001a00;
-    text-align:center;
-    border:1px solid #00ff88;">
-    <h5 style="color:white;margin-bottom:5px;">Top Decrease</h5>
-    <h3 style="color:#00ff88;margin:0;">{decrease_text}</h3>
-</div>
-""", unsafe_allow_html=True)
+    # 🟢 Decrease
+    metric_col2.markdown(f"""
+    <div style="
+        padding:12px;
+        border-radius:12px;
+        background-color:#001a00;
+        text-align:center;
+        border:1px solid #00ff88;">
+        <h5 style="color:white;margin-bottom:5px;">Top Decrease</h5>
+        <h3 style="color:#00ff88;margin:0;">{decrease_text}</h3>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ---------------- TABLE ----------------
 st.markdown("## Full Data Table")
