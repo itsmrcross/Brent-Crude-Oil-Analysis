@@ -24,7 +24,7 @@ st.title("Closure of Strait of Hormuz: Impact on Brent Crude")
 st.subheader("28 February to Present")
 
 # ---------------- LOAD DATA ----------------
-df = pd.read_csv("daily_log.csv", encoding="cp1252")
+df = pd.read_csv("daily_log.csv", encoding="cp1252", on_bad_lines="skip")
 
 # DEBUG: show actual column names (TEMPORARY)
 st.write("Columns:", df.columns)
