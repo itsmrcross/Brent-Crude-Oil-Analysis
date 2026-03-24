@@ -111,7 +111,7 @@ with chart_col:
 
     fig.add_annotation(
         x=max_row["Date"],
-        y=max_row["Price"],
+        y=max_row["Price ($)"],
         text=f"{max_row['Change_numeric']:.2f}%<br>{max_row['Headline Event']}",
         showarrow=True,
         arrowhead=2,
@@ -129,7 +129,7 @@ with chart_col:
 
     fig.add_annotation(
         x=min_row["Date"],
-        y=min_row["Price"],
+        y=min_row["Price ($)"],
         text=f"{min_row['Change_numeric']:.2f}%<br>{min_row['Headline Event']}",
         showarrow=True,
         arrowhead=2,
@@ -148,7 +148,7 @@ with chart_col:
 
     fig.add_annotation(
         x=mid_row["Date"],
-        y=mid_row["Price"],
+        y=mid_row["Price ($)"],
         text=f"{mid_row['Change_numeric']:.2f}%<br>{mid_row['Headline Event']}",
         showarrow=True,
         arrowhead=2,
