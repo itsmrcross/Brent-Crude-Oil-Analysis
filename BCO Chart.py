@@ -122,37 +122,37 @@ with metrics_col:
     # Center using columns
     left, center, right = st.columns([1, 2, 1])
 
-with center:
-    st.markdown(f"""
-    <div style="text-align:center;">
+    with center:
+        st.markdown(f"""
+        <div style="text-align:center;">
 
-        <div style="
-            display:inline-block;
-            border:2px solid #ff4b4b;
-            padding:8px 16px;
-            border-radius:8px;
-            margin-bottom:15px;
-            font-size:22px;
-            font-weight:600;
-        ">
-            {max_increase:.2f}% ↑
+            <div style="
+                display:inline-block;
+                border:2px solid #ff4b4b;
+                padding:8px 16px;
+                border-radius:8px;
+                margin-bottom:15px;
+                font-size:22px;
+                font-weight:600;
+            ">
+                {max_increase:.2f}% ↑
+            </div>
+
+            <br>
+
+            <div style="
+                display:inline-block;
+                border:2px solid #00ff88;
+                padding:8px 16px;
+                border-radius:8px;
+                font-size:22px;
+                font-weight:600;
+            ">
+                {abs(max_decrease):.2f}% ↓
+            </div>
+
         </div>
-
-        <br>
-
-        <div style="
-            display:inline-block;
-            border:2px solid #00ff88;
-            padding:8px 16px;
-            border-radius:8px;
-            font-size:22px;
-            font-weight:600;
-        ">
-            {abs(max_decrease):.2f}% ↓
-        </div>
-
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
 # ---------------- TABLE ----------------
 st.markdown("## Data Table")
