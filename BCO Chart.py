@@ -104,37 +104,6 @@ with chart_col:
         showlegend=False
     )
 
-# -------- CALLOUTS --------
-last_x = None
-
-for i in range(len(df)):
-    change = df["Change_numeric"].iloc[i]
-
-    if change > 5 or change < -5:
-        color = "#00ffaa" if change > 0 else "#ff4b4b"
-
-        # spacing logic to avoid overlap
-        y_offset = -60 if change > 0 else 60
-        if last_x is not None and abs(i - last_x) < 2:
-            y_offset *= 1.8  # push further if too close
-
-        fig.add_annotation(
-            x=df["Date"].iloc[i],
-            y=df["Price"].iloc[i],
-            text=f"{change:.2f}%",
-            showarrow=True,
-            arrowhead=2,
-            arrowcolor=color,
-            ax=0,
-            ay=y_offset,
-            bgcolor="rgba(0,0,0,0.7)",
-            bordercolor=color,
-            borderwidth=1,
-            font=dict(size=10, color="white"),
-        )
-
-        last_x = i
-
     st.plotly_chart(fig, use_container_width=True)
 
 # -------- RIGHT: METRICS --------
