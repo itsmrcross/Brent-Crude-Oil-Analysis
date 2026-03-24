@@ -119,40 +119,18 @@ with metrics_col:
     max_increase = df["Change_numeric"].max()
     max_decrease = df["Change_numeric"].min()
 
-    # Center using columns
-    left, center, right = st.columns([1, 2, 1])
+    col_left, col_center, col_right = st.columns([1, 2, 1])
 
-    with center:
-        st.markdown(f"""
-        <div style="text-align:center;">
+    with col_center:
+        st.metric(
+            label="",
+            value=f"{max_increase:.2f}% ↑"
+        )
 
-            <div style="
-                display:inline-block;
-                border:2px solid #ff4b4b;
-                padding:8px 16px;
-                border-radius:8px;
-                margin-bottom:15px;
-                font-size:22px;
-                font-weight:600;
-            ">
-                {max_increase:.2f}% ↑
-            </div>
-
-            <br>
-
-            <div style="
-                display:inline-block;
-                border:2px solid #00ff88;
-                padding:8px 16px;
-                border-radius:8px;
-                font-size:22px;
-                font-weight:600;
-            ">
-                {abs(max_decrease):.2f}% ↓
-            </div>
-
-        </div>
-        """, unsafe_allow_html=True)
+        st.metric(
+            label="",
+            value=f"{abs(max_decrease):.2f}% ↓"
+        )
 
 # ---------------- TABLE ----------------
 st.markdown("## Data Table")
