@@ -125,16 +125,21 @@ with metrics_col:
     max_increase = df["Change_numeric"].max()
     max_decrease = df["Change_numeric"].min()
 
-    st.markdown(f"""
-        <div style="font-size:22px; font-weight:600;">
-            {max_increase:.2f}% <span style="font-size:24px;">⬆</span>
-        </div>
+    # Values (SAFE HTML — no breakage)
+    st.markdown(
+        f"""
+        <div style="text-align:center;">
+            <div style="font-size:22px; font-weight:600;">
+                {max_increase:.2f}% <span style="font-size:24px;">⬆</span>
+            </div>
 
-        <div style="font-size:22px; font-weight:600; margin-top:10px;">
-            {abs(max_decrease):.2f}% <span style="font-size:24px;">⬇</span>
+            <div style="font-size:22px; font-weight:600; margin-top:10px;">
+                {abs(max_decrease):.2f}% <span style="font-size:24px;">⬇</span>
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True
+    )
 
 # ---------------- TABLE ----------------
 st.markdown("## Full Data Table")
