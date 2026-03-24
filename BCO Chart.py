@@ -133,8 +133,8 @@ with metrics_col:
                 {max_increase:.2f}% <span style="font-size:24px;">⬆</span>
             </div>
 
-            <div style="font-size:22px; font-weight:600; margin-top:10px;">
-                {max_decrease:.2f}% <span style="font-size:24px;">⬇</span>
+            <div style="font-size:22px; font-weight:600;">
+                {abs(max_decrease):.2f}% <span style="font-size:24px;">⬇</span>
             </div>
         </div>
         """,
