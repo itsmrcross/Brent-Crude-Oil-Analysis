@@ -78,7 +78,7 @@ with chart_col:
         df,
         x="Date",
         y="Price",
-        title="Brent Crude Oil Prices Over Time"
+        title="Prices Over Time"
     )
 
     # clean thin line, no dots
@@ -134,7 +134,7 @@ with metrics_col:
         )
 
 # ---------------- TABLE ----------------
-st.markdown("## Full Data Table")
+st.markdown("## Data Table")
 
 st.dataframe(df, use_container_width=True)
 
