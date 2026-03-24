@@ -124,27 +124,27 @@ with metrics_col:
 
     with center:
 
-    # Increase (red border)
-    st.markdown(
-        '<div style="border:2px solid #ff4b4b; padding:10px; border-radius:8px; margin-bottom:10px;">',
-        unsafe_allow_html=True
-    )
-    st.metric(
-        label="",
-        value=f"{max_increase:.2f}% ↑"
-    )
-    st.markdown("</div>", unsafe_allow_html=True)
+        # Increase (red border)
+        st.markdown(
+            '<div style="border:2px solid #ff4b4b; padding:10px; border-radius:8px; margin-bottom:10px;">',
+            unsafe_allow_html=True
+        )
+        st.metric(
+            label="",
+            value=f"{max_increase:.2f}% ↑"
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
 
-    # Decrease (green border)
-    st.markdown(
-        '<div style="border:2px solid #00ff88; padding:10px; border-radius:8px;">',
-        unsafe_allow_html=True
-    )
-    st.metric(
-        label="",
-        value=f"{abs(max_decrease):.2f}% ↓"
-    )
-    st.markdown("</div>", unsafe_allow_html=True)
+        # Decrease (green border)
+        st.markdown(
+            '<div style="border:2px solid #00ff88; padding:10px; border-radius:8px;">',
+            unsafe_allow_html=True
+        )
+        st.metric(
+            label="",
+            value=f"{abs(max_decrease):.2f}% ↓"
+        )
+        st.markdown("</div>", unsafe_allow_html=True)
 
 # ---------------- TABLE ----------------
 st.markdown("## Data Table")
