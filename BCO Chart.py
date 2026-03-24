@@ -133,7 +133,7 @@ for i, row in callouts_df.iterrows():
 
     fig.add_annotation(
         x=row["Date"],
-        y=row["Price"],
+        y=row["Price ($)"],
 
         text=f"{row['Change']}<br>{row['Headline Event']}",
 
