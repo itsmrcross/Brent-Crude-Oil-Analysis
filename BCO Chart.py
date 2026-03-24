@@ -104,6 +104,54 @@ with chart_col:
         showlegend=False
     )
 
+    # -------- SMART CALLOUTS --------
+
+# Get biggest increases & decreases
+top_increases = df.nlargest(3, "Change_numeric")
+top_decreases = df.nsmallest(3, "Change_numeric")
+
+# Combine them
+callouts_df = pd.concat([top_increases, top_decreases]).drop_duplicates()
+
+# Sort by date (better spacing visually)
+callouts_df = callouts_df.sort_values("Date").reset_index(drop=True)
+
+# Offsets to avoid overlap
+offsets = [-80, 80, -100, 100, -60, 60]
+
+for i, row in callouts_df.iterrows():
+
+    change = row["Change_numeric"]
+
+    # Color logic
+    if change == df["Change_numeric"].max():
+        color = "#00ff88"  # biggest increase (green)
+    elif change == df["Change_numeric"].min():
+        color = "#ff4b4b"  # biggest decrease (red)
+    else:
+        color = "#cccccc"  # normal
+
+    fig.add_annotation(
+        x=row["Date"],
+        y=row["Price"],
+
+        text=f"{row['Change']}<br>{row['Headline Event']}",
+
+        showarrow=True,
+        arrowhead=2,
+        arrowcolor=color,
+
+        ax=0,
+        ay=offsets[i % len(offsets)],
+
+        font=dict(size=10, color=color),
+
+        bordercolor=color,
+        borderwidth=1,
+
+        bgcolor="rgba(0,0,0,0)"  # transparent
+    )
+
     st.plotly_chart(fig, use_container_width=True)
 
 # -------- RIGHT: METRICS --------
