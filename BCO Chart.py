@@ -55,7 +55,7 @@ data = [
 ]
 
 columns = [
-    "Date","Headline Event","Price","Change_numeric","Impact","Event Category",
+    "Date","Headline Event","Price ($)","Change_numeric","Impact","Event Category",
     "Key Actors","Supply Impact (mb/d net)","OPEC/IEA/Policy Response",
     "Price Mechanism","Day-on-Day Narrative","Key Quote"
 ]
