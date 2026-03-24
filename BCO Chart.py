@@ -116,52 +116,20 @@ with metrics_col:
     </div>
     """, unsafe_allow_html=True)
 
-    # Calculations
+    # --- CALCULATIONS ---
     max_increase = df["Change_numeric"].max()
     max_decrease = df["Change_numeric"].min()
 
-    increase_text = f"{max_increase:.2f}% ↑"
-    decrease_text = f"{abs(max_decrease):.2f}% ↓"
+    # --- DISPLAY ---
+    st.metric(
+        label="Increase",
+        value=f"{max_increase:.2f}%"
+    )
 
-    col1, col2 = st.columns(2)
-
-    # 🔴 Increase
-    col1.markdown(f"""
-    <div style="
-        padding:6px;
-        border-radius:6px;
-        background-color:#1a0000;
-        text-align:center;
-        border:1px solid #ff4b4b;">
-        
-        <p style="color:white;margin-bottom:3px;font-size:11px;">
-            Increase
-        </p>
-
-        <p style="color:#ff4b4b;margin:0;font-size:12px;font-weight:600;">
-            {increase_text}
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # 🟢 Decrease
-    col2.markdown(f"""
-    <div style="
-        padding:6px;
-        border-radius:6px;
-        background-color:#001a00;
-        text-align:center;
-        border:1px solid #00ff88;">
-        
-        <p style="color:white;margin-bottom:3px;font-size:11px;">
-            Decrease
-        </p>
-
-        <p style="color:#00ff88;margin:0;font-size:12px;font-weight:600;">
-            {decrease_text}
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.metric(
+        label="Decrease",
+        value=f"{abs(max_decrease):.2f}%"
+    )
 
 # ---------------- TABLE ----------------
 st.markdown("## Full Data Table")
