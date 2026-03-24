@@ -134,58 +134,61 @@ with chart_col:
 
     st.plotly_chart(fig, use_container_width=True)
 
-
 # -------- RIGHT: METRICS --------
 with metrics_col:
+
+    # Title (centered properly)
     st.markdown("""
     <div style="text-align:center; margin-bottom:10px;">
         <h4 style="margin:0;">Key Metrics</h4>
     </div>
     """, unsafe_allow_html=True)
 
-    # ---------------- CALCULATIONS ----------------
-
+    # -------- CALCULATIONS --------
     max_increase = df["Change_numeric"].max()
     max_decrease = df["Change_numeric"].min()
 
     increase_text = f"{max_increase:.2f}% ↑"
     decrease_text = f"{abs(max_decrease):.2f}% ↓"
 
-    # ---------------- LAYOUT ----------------
-
+    # -------- METRIC BOXES --------
     metric_col1, metric_col2 = st.columns(2)
 
     # 🔴 Increase
     metric_col1.markdown(f"""
     <div style="
-        padding:8px;
-        border-radius:8px;
+        padding:6px;
+        border-radius:6px;
         background-color:#1a0000;
         text-align:center;
         border:1px solid #ff4b4b;">
-    
-        <p style="color:white;margin-bottom:4px;font-size:12px;">Top Increase</p>
-        <p style="color:#ff4b4b;margin:0;font-size:14px;font-weight:600;">
-            {increase_text}
+        
+        <p style="color:white;margin-bottom:3px;font-size:11px;">
+            Top Increase
         </p>
 
+        <p style="color:#ff4b4b;margin:0;font-size:12px;font-weight:600;">
+            {increase_text}
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
     # 🟢 Decrease
     metric_col2.markdown(f"""
     <div style="
-        padding:8px;
-        border-radius:8px;
+        padding:6px;
+        border-radius:6px;
         background-color:#001a00;
         text-align:center;
         border:1px solid #00ff88;">
-    
-        <p style="color:white;margin-bottom:4px;font-size:12px;">Top Decrease</p>
-        <p style="color:#00ff88;margin:0;font-size:14px;font-weight:600;">
-            {decrease_text}
+        
+        <p style="color:white;margin-bottom:3px;font-size:11px;">
+            Top Decrease
         </p>
 
+        <p style="color:#00ff88;margin:0;font-size:12px;font-weight:600;">
+            {decrease_text}
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
