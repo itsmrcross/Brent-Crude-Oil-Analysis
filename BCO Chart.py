@@ -111,7 +111,7 @@ with metrics_col:
 
     # Title
     st.markdown(
-        "<h4 style='text-align:center; margin-bottom:20px;'>Key Metrics</h4>",
+        "<h4 style='text-align:center; margin-bottom:20px;'><b>Key Metrics</b></h4>",
         unsafe_allow_html=True
     )
 
