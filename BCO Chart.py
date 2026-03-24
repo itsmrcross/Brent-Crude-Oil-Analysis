@@ -83,7 +83,6 @@ with chart_col:
 
     fig.update_traces(
     line=dict(color="#0E025C", width=2),
-    marker=dict(size=0),
 
     customdata=df[[
         "Headline Event",
