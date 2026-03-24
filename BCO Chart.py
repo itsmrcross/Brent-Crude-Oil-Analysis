@@ -123,12 +123,12 @@ with metrics_col:
     # --- DISPLAY ---
     st.metric(
         label="Increase",
-        value=f"{max_increase:.2f}%"
+        value=f"{max_increase:.2f}% ↑"
     )
 
     st.metric(
         label="Decrease",
-        value=f"{abs(max_decrease):.2f}%"
+        value=f"{abs(max_decrease):.2f}% ↓"
     )
 
 # ---------------- TABLE ----------------
