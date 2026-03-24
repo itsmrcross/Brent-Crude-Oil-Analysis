@@ -175,8 +175,8 @@ with metrics_col:
     # 🟢 Decrease
     metric_col2.markdown(f"""
     <div style="
-        padding:10px;
-        border-radius:10px;
+        padding:8px;
+        border-radius:8px;
         background-color:#001a00;
         text-align:center;
         border:1px solid #00ff88;">
