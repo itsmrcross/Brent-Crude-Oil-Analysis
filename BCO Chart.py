@@ -77,7 +77,7 @@ with chart_col:
     fig = px.line(
         df,
         x="Date",
-        y="Price",
+        y="Price ($)",
         title="Prices Over Time"
     )
 
