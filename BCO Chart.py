@@ -121,8 +121,8 @@ with metrics_col:
 
     # Center using columns
     left, center, right = st.columns([1, 2, 1])
-
-    with center:
+    
+with center:
 
     st.markdown(f"""
     <div style="text-align:center;">
