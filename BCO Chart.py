@@ -134,7 +134,7 @@ with metrics_col:
             </div>
 
             <div style="font-size:22px; font-weight:600; margin-top:10px;">
-                {abs(max_decrease):.2f}% <span style="font-size:24px;">⬇</span>
+                {max_decrease:.2f}% <span style="font-size:24px;">⬇</span>
             </div>
         </div>
         """,
