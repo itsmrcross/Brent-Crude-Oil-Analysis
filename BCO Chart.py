@@ -106,44 +106,58 @@ with chart_col:
 
 # -------- SMART CALLOUTS --------
 
-# Get biggest increases & decreases
-top_increases = df.nlargest(3, "Change_numeric")
-top_decreases = df.nsmallest(3, "Change_numeric")
-
-# Combine
-callouts_df = pd.concat([top_increases, top_decreases]).drop_duplicates()
-
-# Sort for spacing
-callouts_df = callouts_df.sort_values("Date").reset_index(drop=True)
-
-# Offsets to prevent overlap
-offsets = [-80, 80, -100, 100, -60, 60]
-
-# Add annotations
-for i, row in callouts_df.iterrows():
-
-    change = row["Change_numeric"]
-
-    # Color logic
-    if change == df["Change_numeric"].max():
-        color = "#00ff88"  # biggest increase
-    elif change == df["Change_numeric"].min():
-        color = "#ff4b4b"  # biggest decrease
-    else:
-        color = "#cccccc"  # normal
+    # Biggest increase
+    max_row = df.loc[df["Change_numeric"].idxmax()]
 
     fig.add_annotation(
-        x=row["Date"],
-        y=row["Price ($)"],
-        text=f"{change:.2f}%<br>{row['Headline Event']}",
+        x=max_row["Date"],
+        y=max_row["Price"],
+        text=f"{max_row['Change_numeric']:.2f}%<br>{max_row['Headline Event']}",
         showarrow=True,
         arrowhead=2,
-        arrowcolor=color,
-        ax=0,
-        ay=offsets[i % len(offsets)],
-        font=dict(size=10, color=color),
-        bordercolor=color,
+        arrowcolor="#00ff88",
+        font=dict(color="#00ff88", size=10),
+        bordercolor="#00ff88",
         borderwidth=1,
+        ax=0,
+        ay=-80,
+        bgcolor="rgba(0,0,0,0)"
+    )
+
+    # Biggest decrease
+    min_row = df.loc[df["Change_numeric"].idxmin()]
+
+    fig.add_annotation(
+        x=min_row["Date"],
+        y=min_row["Price"],
+        text=f"{min_row['Change_numeric']:.2f}%<br>{min_row['Headline Event']}",
+        showarrow=True,
+        arrowhead=2,
+        arrowcolor="#ff4b4b",
+        font=dict(color="#ff4b4b", size=10),
+        bordercolor="#ff4b4b",
+        borderwidth=1,
+        ax=0,
+        ay=80,
+        bgcolor="rgba(0,0,0,0)"
+    )
+
+    # Optional: one normal callout (middle point for spacing)
+    mid_index = len(df) // 2
+    mid_row = df.iloc[mid_index]
+
+    fig.add_annotation(
+        x=mid_row["Date"],
+        y=mid_row["Price"],
+        text=f"{mid_row['Change_numeric']:.2f}%<br>{mid_row['Headline Event']}",
+        showarrow=True,
+        arrowhead=2,
+        arrowcolor="#cccccc",
+        font=dict(color="#cccccc", size=10),
+        bordercolor="#cccccc",
+        borderwidth=1,
+        ax=0,
+        ay=-100,
         bgcolor="rgba(0,0,0,0)"
     )
 
