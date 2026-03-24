@@ -66,7 +66,7 @@ df = pd.DataFrame(data, columns=columns)
 df["Change"] = df["Change_numeric"].apply(lambda x: f"{x:+.2f}%")
 
 # ---------------- CHART + METRICS SIDE BY SIDE ----------------
-st.markdown("## Brent Crude Oil Price Trend & Key Metrics")
+st.markdown("## Brent Crude Oil")
 
 chart_col, metrics_col = st.columns([4, 1])  # bigger chart
 
@@ -76,7 +76,7 @@ with chart_col:
         df,
         x="Date",
         y="Price",
-        title="Brent Crude Oil Prices Over Time",
+        title="Prices Over Time",
        
     )
 
