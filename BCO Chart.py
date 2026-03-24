@@ -98,7 +98,7 @@ with chart_col:
 
     hoverlabel=dict(
         font=dict(
-            family="Montserrat, sans-serif",
+            family="Montserrat",
             size=12
         )
     )
