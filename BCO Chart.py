@@ -92,8 +92,8 @@ with chart_col:
 
     hovertemplate=
         "<b>Date:</b> %{x}<br>" +
-        "<b>Price:</b> $%{y}<br><br>" +
-        "<b>Event:</b> %{customdata[0]}<br><br>" +
+        "<b>Price:</b> $%{y}<br>" +
+        "<b>Event:</b> %{customdata[0]}<br>" +
         "<b>Narrative:</b> %{customdata[1]}<extra></extra>",
 
     hoverlabel=dict(
