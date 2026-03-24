@@ -101,7 +101,7 @@ with chart_col:
         hovermode="x unified",
         xaxis_title="Date",
         yaxis_title="Price ($/Barrel)",
-        showlegend=False
+        showlegend=True
     )
 
 # -------- SMART CALLOUTS --------
