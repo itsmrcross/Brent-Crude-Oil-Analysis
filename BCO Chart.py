@@ -497,12 +497,12 @@ fg_high.add_to(m)
 fg_special.add_to(m)
 fg_open.add_to(m)
 
-# ─── PLUGINS ─────────────────────────────────────────────────────────────────
+# ─── PLUGINS ────
 MiniMap(toggle_display=True, tile_layer="CartoDB dark_matter").add_to(m)
 MousePosition().add_to(m)
 folium.LayerControl(collapsed=False).add_to(m)
 
-# ──_─ CUSTOM HEADER / LEGEND ───────────
+# ─── CUSTOM HEADER / LEGEND ────
 legend_html = """
 <div id="map-header" style="
     position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;
