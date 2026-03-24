@@ -78,24 +78,31 @@ with chart_col:
         y="Price",
         title="Brent Crude Oil Prices Over Time",
         markers=True,
-        hover_data=[
-            "Headline Event",
-            "Impact",
-            "Event Category",
-            "Key Actors",
-            "Supply Impact (mb/d net)",
-            "OPEC/IEA/Policy Response",
-            "Price Mechanism",
-            "Day-on-Day Narrative",
-            "Key Quote",
-            "Change"
-        ]
+       
     )
 
     fig.update_traces(
-        line=dict(color="#13008D", width=3),
-        marker=dict(size=6),
+    line=dict(color="#13008D", width=3),
+    marker=dict(size=8),
+
+    customdata=df[[
+        "Headline Event",
+        "Day-on-Day Narrative"
+    ]],
+
+    hovertemplate=
+        "<b>Date:</b> %{x}<br>" +
+        "<b>Price:</b> $%{y}<br><br>" +
+        "<b>Event:</b> %{customdata[0]}<br><br>" +
+        "<b>Narrative:</b> %{customdata[1]}<extra></extra>",
+
+    hoverlabel=dict(
+        font=dict(
+            family="Montserrat, sans-serif",
+            size=12
+        )
     )
+)
 
     fig.update_layout(
         template="plotly_dark",
