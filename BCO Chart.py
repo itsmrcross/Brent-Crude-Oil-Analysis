@@ -77,13 +77,11 @@ with chart_col:
         x="Date",
         y="Price",
         title="Brent Crude Oil Prices Over Time",
-        markers=True,
        
     )
 
     fig.update_traces(
-    line=dict(color="#0E025C", width=2),
-    marker=dict(size=8),
+    line=dict(color="#0E025C", width=1.5),
 
     customdata=df[[
         "Headline Event",
