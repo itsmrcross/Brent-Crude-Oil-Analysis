@@ -110,7 +110,10 @@ with chart_col:
 with metrics_col:
 
     # Title
-    st.markdown("#### Key Metrics")
+    st.markdown(
+        "<h4 style='text-align:center; margin-bottom:20px;'>Key Metrics</h4>",
+        unsafe_allow_html=True
+    )
 
     # Calculations
     max_increase = df["Change_numeric"].max()
