@@ -109,37 +109,26 @@ with chart_col:
 # -------- RIGHT: METRICS --------
 with metrics_col:
 
-    st.markdown("""
-    <div style="
-        text-align:center;
-        display:flex;
-        flex-direction:column;
-        justify-content:flex-start;
-        align-items:center;
-        height:100%;
-        margin-top:40px;
-    ">
-        <h4 style="margin-bottom:20px;">Key Metrics</h4>
-    """, unsafe_allow_html=True)
+    # Title
+    st.markdown("#### Key Metrics")
 
+    # Calculations
     max_increase = df["Change_numeric"].max()
     max_decrease = df["Change_numeric"].min()
 
-    # Values (SAFE HTML — no breakage)
-    st.markdown(
-        f"""
-        <div style="text-align:center;">
-            <div style="font-size:22px; font-weight:600;">
-                {max_increase:.2f}% <span style="font-size:24px;">⬆</span>
-            </div>
+    # Center using columns
+    left, center, right = st.columns([1, 2, 1])
 
-            <div style="font-size:22px; font-weight:600;">
-                {abs(max_decrease):.2f}% <span style="font-size:24px;">⬇</span>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+    with center:
+        st.metric(
+            label="",
+            value=f"{max_increase:.2f}% ↑"
+        )
+
+        st.metric(
+            label="",
+            value=f"{abs(max_decrease):.2f}% ↓"
+        )
 
 # ---------------- TABLE ----------------
 st.markdown("## Full Data Table")
