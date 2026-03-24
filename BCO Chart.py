@@ -109,34 +109,32 @@ with chart_col:
 # -------- RIGHT: METRICS --------
 with metrics_col:
 
-    # Title
     st.markdown("""
-    <div style="text-align:center; margin-bottom:10px;">
-        <h4 style="margin:0;">Key Metrics</h4>
-    </div>
+    <div style="
+        text-align:center;
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-start;
+        align-items:center;
+        height:100%;
+        margin-top:40px;
+    ">
+        <h4 style="margin-bottom:20px;">Key Metrics</h4>
     """, unsafe_allow_html=True)
 
-    # --- CALCULATIONS ---
     max_increase = df["Change_numeric"].max()
     max_decrease = df["Change_numeric"].min()
 
-   # --- DISPLAY (VALUES ONLY) ---
+    st.markdown(f"""
+        <div style="font-size:22px; font-weight:600;">
+            {max_increase:.2f}% <span style="font-size:24px;">⬆</span>
+        </div>
 
-st.markdown(f"""
-<div style="text-align:center; margin-bottom:10px;">
-    <div style="font-size:22px; font-weight:600;">
-        {max_increase:.2f}% <span style="font-size:24px;">⬆</span>
+        <div style="font-size:22px; font-weight:600; margin-top:10px;">
+            {abs(max_decrease):.2f}% <span style="font-size:24px;">⬇</span>
+        </div>
     </div>
-</div>
-""", unsafe_allow_html=True)
-
-st.markdown(f"""
-<div style="text-align:center;">
-    <div style="font-size:22px; font-weight:600;">
-        {abs(max_decrease):.2f}% <span style="font-size:24px;">⬇</span>
-    </div>
-</div>
-""", unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
 # ---------------- TABLE ----------------
 st.markdown("## Full Data Table")
@@ -504,7 +502,7 @@ MiniMap(toggle_display=True, tile_layer="CartoDB dark_matter").add_to(m)
 MousePosition().add_to(m)
 folium.LayerControl(collapsed=False).add_to(m)
 
-# ─── CUSTOM HEADER / LEGEND ──────────────────────────────────────────────────
+# ──_─ CUSTOM HEADER / LEGEND ───────────
 legend_html = """
 <div id="map-header" style="
     position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9999;
