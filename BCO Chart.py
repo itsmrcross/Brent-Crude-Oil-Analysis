@@ -66,96 +66,67 @@ df = pd.DataFrame(data, columns=columns)
 df["Change"] = df["Change_numeric"].apply(lambda x: f"{x:+.2f}%")
 
 # ---------------- CHART + METRICS SIDE BY SIDE ----------------
+
 st.markdown("## Brent Crude Oil")
 
-chart_col, metrics_col = st.columns([4, 1])  # bigger chart
+chart_col, metrics_col = st.columns([4, 1])
 
 # -------- LEFT: CHART --------
 with chart_col:
+
     fig = px.line(
         df,
         x="Date",
         y="Price",
-        title="Prices Over Time",
-       
+        title="Brent Crude Oil Prices Over Time"
     )
 
+    # clean thin line, no dots
     fig.update_traces(
-    line=dict(color="#0E025C", width=1.5),
-
-    customdata=df[[
-        "Headline Event",
-        "Day-on-Day Narrative"
-    ]],
-
-    hovertemplate=
-        "<b>Date:</b> %{x}<br>" +
-        "<b>Price:</b> $%{y}<br>" +
-        "<b>Event:</b> %{customdata[0]}<br>" +
-        "<b>Narrative:</b> %{customdata[1]}<extra></extra>",
-
-    hoverlabel=dict(
-        font=dict(
-            family="Montserrat",
-            size=12
-        )
+        line=dict(color="#0E2D5C", width=1.2),
+        mode="lines",
+        customdata=df[[
+            "Headline Event",
+            "Day-on-Day Narrative"
+        ]],
+        hovertemplate=
+            "<b>Date:</b> %{x}<br>" +
+            "<b>Price:</b> $%{y}<br>" +
+            "<b>Event:</b> %{customdata[0]}<br>" +
+            "<b>Narrative:</b> %{customdata[1]}<extra></extra>"
     )
-)
 
     fig.update_layout(
         template="plotly_dark",
         hovermode="x unified",
         xaxis_title="Date",
         yaxis_title="Price ($/Barrel)",
-        annotations=[]
+        showlegend=False
     )
-
-    # Smart callouts
-    for i in range(len(df)):
-        change = df["Change_numeric"].iloc[i]
-
-        if change > 5 or change < -5:
-            color = "#00FFAA" if change > 0 else "#FF4B4B"
-
-            fig.add_annotation(
-                x=df["Date"].iloc[i],
-                y=df["Price"].iloc[i],
-                text=f"{df['Change'].iloc[i]}<br>{str(df['Key Quote'].iloc[i])[:50]}...",
-                showarrow=True,
-                arrowhead=2,
-                arrowcolor=color,
-                ax=0,
-                ay=-80 if change > 0 else 80,
-                bgcolor="rgba(0,0,0,0.7)",
-                bordercolor=color,
-                borderwidth=1,
-                font=dict(size=10, color="white"),
-            )
 
     st.plotly_chart(fig, use_container_width=True)
 
 # -------- RIGHT: METRICS --------
 with metrics_col:
 
-    # Title (centered properly)
+    # Title
     st.markdown("""
     <div style="text-align:center; margin-bottom:10px;">
         <h4 style="margin:0;">Key Metrics</h4>
     </div>
     """, unsafe_allow_html=True)
 
-    # -------- CALCULATIONS --------
+    # Calculations
     max_increase = df["Change_numeric"].max()
     max_decrease = df["Change_numeric"].min()
 
     increase_text = f"{max_increase:.2f}% ↑"
     decrease_text = f"{abs(max_decrease):.2f}% ↓"
 
-    # -------- METRIC BOXES --------
-    metric_col1, metric_col2 = st.columns(2)
+    col1, col2 = st.columns(2)
 
     # 🔴 Increase
-    metric_col1.markdown(f"""
+    col1.markdown(f"""
     <div style="
         padding:6px;
         border-radius:6px;
@@ -164,7 +135,7 @@ with metrics_col:
         border:1px solid #ff4b4b;">
         
         <p style="color:white;margin-bottom:3px;font-size:11px;">
-            Top Increase
+            Increase
         </p>
 
         <p style="color:#ff4b4b;margin:0;font-size:12px;font-weight:600;">
@@ -174,7 +145,7 @@ with metrics_col:
     """, unsafe_allow_html=True)
 
     # 🟢 Decrease
-    metric_col2.markdown(f"""
+    col2.markdown(f"""
     <div style="
         padding:6px;
         border-radius:6px;
@@ -183,7 +154,7 @@ with metrics_col:
         border:1px solid #00ff88;">
         
         <p style="color:white;margin-bottom:3px;font-size:11px;">
-            Top Decrease
+            Decrease
         </p>
 
         <p style="color:#00ff88;margin:0;font-size:12px;font-weight:600;">
