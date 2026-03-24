@@ -121,33 +121,17 @@ with metrics_col:
 
     # Center using columns
     left, center, right = st.columns([1, 2, 1])
-    
-with center:
 
-    st.markdown(f"""
-    <div style="text-align:center;">
+    with center:
+        st.metric(
+            label="",
+            value=f"{max_increase:.2f}% ↑"
+        )
 
-        <div style="
-            font-size:24px;
-            font-weight:700;
-            color:#ff4b4b;
-            text-shadow: 0 0 8px rgba(255,75,75,0.7);
-            margin-bottom:10px;
-        ">
-            {max_increase:.2f}% ↑
-        </div>
-
-        <div style="
-            font-size:24px;
-            font-weight:700;
-            color:#00ff88;
-            text-shadow: 0 0 8px rgba(0,255,136,0.7);
-        ">
-            {abs(max_decrease):.2f}% ↓
-        </div>
-
-    </div>
-    """, unsafe_allow_html=True)
+        st.metric(
+            label="",
+            value=f"{abs(max_decrease):.2f}% ↓"
+        )
 
 # ---------------- TABLE ----------------
 st.markdown("## Data Table")
