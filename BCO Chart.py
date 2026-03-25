@@ -273,6 +273,9 @@ if selected_date in full_narratives:
 else:
     st.warning("No narrative found for this date.")
 
+<b></b>
+<b></b>
+
 # ---------------- MAP ----------------
 st.markdown("## Global Strategic Waterways Map")
 
