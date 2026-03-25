@@ -228,7 +228,31 @@ selected_index = st.selectbox(
 )
 
 # Show table normally
-st.dataframe(df, use_container_width=True)
+import plotly.graph_objects as go
+
+# Create hover text (full narrative per row)
+hover_text = [
+    f"<b>{row['Date']}</b><br><br>{row['Day-on-Day Narrative']}"
+    for _, row in df.iterrows()
+]
+
+fig_table = go.Figure(data=[go.Table(
+    header=dict(
+        values=list(df.columns),
+        fill_color='white',
+        align='left'
+    ),
+    cells=dict(
+        values=[df[col] for col in df.columns],
+        align='left',
+
+        # 🔥 THIS IS THE MAGIC
+        hovertext=hover_text,
+        hoverinfo='text'
+    )
+)])
+
+st.plotly_chart(fig_table, use_container_width=True)
 
 # Show FULL narrative
 selected_date = str(df.loc[selected_index, "Date"])
