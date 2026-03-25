@@ -231,7 +231,7 @@ selected_index = st.selectbox(
 fig_table = go.Figure(
     data=[
         go.Table(
-            columnwidth=[165, 180, 85, 120, 90, 150, 120, 110, 180, 140, 185, 140, 110],
+            columnwidth=[105, 180, 85, 120, 90, 150, 120, 110, 180, 140, 185, 140, 110],
             header=dict(
                 values=list(df.columns),
                 fill_color="#031734",   # dark header
