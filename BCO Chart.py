@@ -84,7 +84,7 @@ with chart_col:
 
     # clean thin line, no dots
     fig.update_traces(
-        line=dict(color="#0E2D5C", width=1.2),
+        line=dict(color="#031734", width=1.2),
         mode="lines",
         customdata=df[[
             "Headline Event",
@@ -231,9 +231,10 @@ selected_index = st.selectbox(
 fig_table = go.Figure(
     data=[
         go.Table(
+            columnwidth=[80, 180, 80, 100, 90, 150, 120, 150, 180, 140, 200, 150, 100],
             header=dict(
                 values=list(df.columns),
-                fill_color="#1f2937",   # dark header
+                fill_color="#031734",   # dark header
                 font=dict(color="white", size=13),
                 align="left",
                 height=35
