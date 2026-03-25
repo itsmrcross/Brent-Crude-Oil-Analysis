@@ -233,15 +233,24 @@ fig_table = go.Figure(
         go.Table(
             header=dict(
                 values=list(df.columns),
-                fill_color="white",
-                align="left"
+                fill_color="#1f2937",   # dark header
+                font=dict(color="white", size=13),
+                align="left",
+                height=35
             ),
             cells=dict(
                 values=[df[col] for col in df.columns],
-                align="left"
+                fill_color=[["#f9fafb", "#ffffff"] * (len(df)//2 + 1)],  # zebra stripes
+                align="left",
+                font=dict(size=12, color="#111827"),
+                height=30
             )
         )
     ]
+)
+
+fig_table.update_layout(
+    margin=dict(l=0, r=0, t=10, b=0)
 )
 
 st.plotly_chart(fig_table, use_container_width=True)
