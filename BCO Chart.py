@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import plotly.graph_objects as go
 import folium
 from streamlit_folium import st_folium
 
@@ -227,30 +228,21 @@ selected_index = st.selectbox(
     format_func=lambda i: f"{df.loc[i, 'Date']} — {df.loc[i, 'Headline Event']}"
 )
 
-# Show table normally
-import plotly.graph_objects as go
-
-# Create hover text (full narrative per row)
-hover_text = [
-    f"<b>{row['Date']}</b><br><br>{row['Day-on-Day Narrative']}"
-    for _, row in df.iterrows()
-]
-
-fig_table = go.Figure(data=[go.Table(
-    header=dict(
-        values=list(df.columns),
-        fill_color='white',
-        align='left'
-    ),
-    cells=dict(
-        values=[df[col] for col in df.columns],
-        align='left',
-
-        # 🔥 THIS IS THE MAGIC
-        hovertext=hover_text,
-        hoverinfo='text'
-    )
-)])
+fig_table = go.Figure(
+    data=[
+        go.Table(
+            header=dict(
+                values=list(df.columns),
+                fill_color="white",
+                align="left"
+            ),
+            cells=dict(
+                values=[df[col] for col in df.columns],
+                align="left"
+            )
+        )
+    ]
+)
 
 st.plotly_chart(fig_table, use_container_width=True)
 
