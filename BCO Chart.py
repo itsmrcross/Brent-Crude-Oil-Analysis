@@ -118,7 +118,7 @@ with chart_col:
         arrowcolor="#029200",
         font=dict(color="#000000", size=10),
         bordercolor="#029200",
-        borderwidth=2.5,
+        borderwidth=2,
         ax=0,
         ay=-80,
         bgcolor="rgba(0,0,0,0)"
@@ -136,7 +136,7 @@ with chart_col:
         arrowcolor="#c40505",
         font=dict(color="#000000", size=10),
         bordercolor="#c40505",
-        borderwidth=2.5,
+        borderwidth=2,
         ax=0,
         ay=80,
         bgcolor="rgba(0,0,0,0)"
