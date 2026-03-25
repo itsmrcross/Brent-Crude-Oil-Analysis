@@ -190,34 +190,6 @@ with metrics_col:
             value=f"{abs(max_decrease):.2f}% ↓"
         )
 
-# FULL Day-on-Day Narratives
-full_narratives = {
-    "2026-02-28": """Brent climbed $1.70 on the day as Trump's public rebuke of Iran negotiators signalled imminent military action. Markets had been pricing a 40% probability...""",
-    "2026-03-01": """U.S.–Israeli strikes on Iranian military sites overnight triggered Iran's IRGC to declare the Strait of Hormuz closed...""",
-    "2026-03-02": """Second consecutive day of massive upward pressure. Overnight airstrikes hit Iranian radar...""",
-    "2026-03-03": """With tanker traffic effectively nil through Hormuz, Gulf producers began shutting wells...""",
-    "2026-03-04": """Flat close on high volumes masked extreme intraday volatility...""",
-    "2026-03-05": """Fresh Iranian drone attacks on two Greek-flagged tankers...""",
-    "2026-03-06": """The largest single-day gain since the crisis began...""",
-    "2026-03-07": """Iran's President offered a conditional halt to attacks...""",
-    "2026-03-08": """The Shenlong transited the strait carrying ~1 mb of Saudi crude...""",
-    "2026-03-09": """Despite the previous day's tanker transit, Iran launched drone and missile salvos...""",
-    "2026-03-10": """Ahead of the formal IEA decision, energy ministers signalled support...""",
-    "2026-03-11": """Despite the largest-ever coordinated SPR release, Brent surged nearly $5.26...""",
-    "2026-03-12": """Brent crossed $100/bbl for the first time since 2022...""",
-    "2026-03-13": """Goldman Sachs reset its oil price trajectory...""",
-    "2026-03-14": """A tanker moored off Fujairah was struck by a projectile...""",
-    "2026-03-15": """India's Foreign Minister confirmed direct talks with Tehran...""",
-    "2026-03-16": """Treasury Secretary Bessent told Fox Business...""",
-    "2026-03-17": """A Fujairah-anchored tanker was struck for a second time...""",
-    "2026-03-18": """Strikes hit the South Pars/North Field gas complex...""",
-    "2026-03-19": """Iranian drones struck Kuwait's refinery complex...""",
-    "2026-03-20": """Iraq formally declared force majeure on all oilfields...""",
-    "2026-03-21": """Goldman Sachs revised its war-scenario oil price model upward...""",
-    "2026-03-22": """Monday session whipsawed violently...""",
-    "2026-03-23": """Brent climbed to $113.52 as Iran declared it would close the strait indefinitely..."""
-}
-
 # ---------------- TABLE ----------------
 st.markdown("## Data Table")
 
