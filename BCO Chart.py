@@ -190,7 +190,7 @@ with metrics_col:
             value=f"{abs(max_decrease):.2f}% ↓"
         )
 
-# FULL Day-on-Day Narratives
+# Complete Day Narratives
 full_narratives = {
     "2026-02-28": """Brent climbed $1.70 on the day as Trump's public rebuke of Iran negotiators signalled imminent military action. Markets had been pricing a 40% probability...""",
     "2026-03-01": """U.S.–Israeli strikes on Iranian military sites overnight triggered Iran's IRGC to declare the Strait of Hormuz closed...""",
@@ -223,7 +223,7 @@ st.markdown("## Data Table")
 
 # Select row (this replaces "double click")
 selected_index = st.selectbox(
-    "Select a day to view FULL narrative:",
+    "Select a day to view Full Day Narrative:",
     df.index,
     format_func=lambda i: f"{df.loc[i, 'Date']} — {df.loc[i, 'Headline Event']}"
 )
@@ -249,7 +249,7 @@ st.plotly_chart(fig_table, use_container_width=True)
 # Show FULL narrative
 selected_date = str(df.loc[selected_index, "Date"])
 
-st.markdown("### Full Day-on-Day Narrative")
+st.markdown("### Complete Day Narrative")
 
 if selected_date in full_narratives:
     st.markdown(
