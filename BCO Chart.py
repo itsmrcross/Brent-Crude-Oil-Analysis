@@ -101,7 +101,7 @@ with chart_col:
         hovermode="x unified",
         xaxis_title="Date",
         yaxis_title="Price ($/Barrel)",
-        showlegend=True
+        showlegend=False
     )
 
 # -------- SMART CALLOUTS --------
@@ -117,7 +117,7 @@ with chart_col:
         arrowhead=2,
         arrowcolor="#00ff88",
         font=dict(color="#00ff88", size=10),
-        bordercolor="#00ff88",
+        bordercolor="#000000",
         borderwidth=1,
         ax=0,
         ay=-80,
@@ -135,7 +135,7 @@ with chart_col:
         arrowhead=2,
         arrowcolor="#ff4b4b",
         font=dict(color="#ff4b4b", size=10),
-        bordercolor="#ff4b4b",
+        bordercolor="#000000",
         borderwidth=1,
         ax=0,
         ay=80,
@@ -154,7 +154,7 @@ with chart_col:
         arrowhead=2,
         arrowcolor="#cccccc",
         font=dict(color="#cccccc", size=10),
-        bordercolor="#cccccc",
+        bordercolor="#000000",
         borderwidth=1,
         ax=0,
         ay=-100,
